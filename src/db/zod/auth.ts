@@ -1,5 +1,5 @@
 import { users } from "@/src/db/schema/users";
-import { insertUserSchema } from "@/src/db/zod/usets";
+import { insertUserSchema } from "@/src/db/zod/users";
 import { z } from "zod";
 
 export const registerSchema = z.object({
