@@ -32,19 +32,21 @@
     "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "cypress": "^15.8.1",
     "drizzle-kit": "1.0.0-beta.6-4414a19",
     "eslint": "^9.39.2",
     "eslint-config-next": "16.1.1",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   },
   "pnpm": {
     "overrides": {
       "esbuild": "^0.25.0"
     },
     "ignoredBuiltDependencies": [
-      "@clerk/shared",
+      "cypress",
       "sharp",
       "unrs-resolver"
     ]
