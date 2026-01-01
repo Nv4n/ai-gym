@@ -142,7 +142,7 @@ export async function choosePlan(formData: FormData) {
 
 	// Mock: Save plan selection to user profile
 	// In production, save to database
-	console.log("[v0] Plan selected:", { planId, planName, planType });
+	console.log("Plan selected:", { planId, planName, planType });
 
 	// Mock delay for saving
 	await new Promise((resolve) => setTimeout(resolve, 500));
@@ -163,7 +163,7 @@ export async function bookTrainer(formData: FormData) {
 	const timeSlot = formData.get("timeSlot") as string;
 
 	// Mock: Save booking to database
-	console.log("[v0] Training session booked:", { trainerId, date, timeSlot });
+	console.log("Training session booked:", { trainerId, date, timeSlot });
 
 	await new Promise((resolve) => setTimeout(resolve, 500));
 

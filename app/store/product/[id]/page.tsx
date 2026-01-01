@@ -89,6 +89,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
 							{/* Purchase Button */}
 							<div className="space-y-4">
+								<CheckoutButton productId={product.id} />
+
 								<SignedOut>
 									<Button
 										asChild
@@ -144,11 +146,19 @@ function CheckoutButton({ productId }: { productId: string }) {
 				const { createCheckoutSession } = await import(
 					"@/app/actions/stripe"
 				);
-				const { sessionId, url } = await createCheckoutSession(
-					productId
-				);
-				if (url) {
-					redirect(url);
+
+				let result: {
+					sessionId: string;
+					url: string | null;
+				} | null = null;
+				try {
+					result = await createCheckoutSession(productId);
+				} catch (error) {
+					console.error("Purchase error:", error);
+				} finally {
+					if (result?.url) {
+						redirect(result.url);
+					}
 				}
 			}}
 		>

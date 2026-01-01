@@ -106,7 +106,7 @@ export default function PersonalTrainingPage() {
 				window.location.href = result.url;
 			}
 		} catch (error) {
-			console.error("[v0] Booking error:", error);
+			console.error("Booking error:", error);
 			alert("Failed to create booking. Please try again.");
 		} finally {
 			setIsBooking(false);

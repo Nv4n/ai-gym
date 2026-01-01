@@ -2,8 +2,10 @@
 
 import { stripe } from "@/src/lib/stripe";
 import { PRODUCTS } from "@/src/lib/products";
+import { headers } from "next/headers";
 
 export async function createCheckoutSession(productId: string) {
+	const origin: string = (await headers()).get("origin") as string;
 	const product = PRODUCTS.find((p) => p.id === productId);
 
 	if (!product) {
@@ -18,7 +20,7 @@ export async function createCheckoutSession(productId: string) {
 					product_data: {
 						name: product.name,
 						description: product.description,
-						images: [product.image],
+						images: [`${origin}/${product.image}`],
 					},
 					unit_amount: Math.round(product.price * 100),
 				},
@@ -26,8 +28,8 @@ export async function createCheckoutSession(productId: string) {
 			},
 		],
 		mode: "payment",
-		success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout/success`,
-		cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/store`,
+		success_url: `${origin}/checkout/success?type=product`,
+		cancel_url: `${origin}/store`,
 	});
 
 	return { sessionId: session.id, url: session.url };
@@ -45,6 +47,7 @@ export async function createTrainingCheckout(booking: {
 	// if (!userId) {
 	//   throw new Error("Unauthorized")
 	// }
+	const origin: string = (await headers()).get("origin") as string;
 
 	const session = await stripe.checkout.sessions.create({
 		line_items: [
@@ -63,8 +66,8 @@ export async function createTrainingCheckout(booking: {
 			},
 		],
 		mode: "payment",
-		success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout/success?type=training`,
-		cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/gym/personal-training`,
+		success_url: `${origin}/checkout/success?type=training`,
+		cancel_url: `${origin}/gym/personal-training`,
 		metadata: {
 			type: "training",
 			trainerId: booking.trainerId,
@@ -92,6 +95,7 @@ export async function createDietPlanCheckout(plan: {
 	// if (!userId) {
 	//   throw new Error("Unauthorized")
 	// }
+	const origin: string = (await headers()).get("origin") as string;
 
 	const session = await stripe.checkout.sessions.create({
 		line_items: [
@@ -108,8 +112,8 @@ export async function createDietPlanCheckout(plan: {
 			},
 		],
 		mode: "payment",
-		success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout/success?type=diet`,
-		cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/gym/diet-plans`,
+		success_url: `${origin}/checkout/success?type=diet`,
+		cancel_url: `${origin}/gym/diet-plans`,
 		metadata: {
 			type: "diet",
 			planId: plan.planId,

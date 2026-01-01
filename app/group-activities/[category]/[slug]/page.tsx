@@ -115,7 +115,7 @@ export default function ClassDetailPage(
 		setIsReserving(true);
 
 		// Mock reservation API call
-		console.log("[v0] Reserving class:", {
+		console.log("Reserving class:", {
 			activityId: activity.id,
 			activityName: activity.name,
 			date: selectedDate.toISOString(),

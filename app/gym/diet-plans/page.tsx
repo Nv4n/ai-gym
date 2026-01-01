@@ -104,7 +104,7 @@ export default function DietPlansPage() {
 				window.location.href = result.url;
 			}
 		} catch (error) {
-			console.error("[v0] Purchase error:", error);
+			console.error("Purchase error:", error);
 			alert("Failed to process purchase. Please try again.");
 		} finally {
 			setIsPurchasing(false);
