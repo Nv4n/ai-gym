@@ -1,25 +1,25 @@
 "use client";
 
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/src/components/navbar";
 import { DIET_PLANS } from "@/src/lib/gym-data";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/src/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+} from "@/src/components/ui/card";
+import { Label } from "@/src/components/ui/label";
+import { Slider } from "@/src/components/ui/slider";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
+} from "@/src/components/ui/select";
 import { useState } from "react";
 import { createDietPlanCheckout } from "@/app/actions/stripe";
 import { Check } from "lucide-react";

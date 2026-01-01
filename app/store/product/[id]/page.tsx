@@ -1,5 +1,5 @@
-import { Navbar } from "@/components/navbar";
-import { Button } from "@/components/ui/button";
+import { Navbar } from "@/src/components/navbar";
+import { Button } from "@/src/components/ui/button";
 import { PRODUCTS } from "@/src/lib/products";
 import { notFound, redirect } from "next/navigation";
 import { SignedIn, SignedOut } from "@clerk/nextjs";

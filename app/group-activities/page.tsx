@@ -1,14 +1,14 @@
 "use client";
 
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/src/components/navbar";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/src/components/ui/card";
+import { Badge } from "@/src/components/ui/badge";
 import { CATEGORIES, GROUP_ACTIVITIES } from "@/src/lib/group-activities";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";

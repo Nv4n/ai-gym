@@ -1,5 +1,5 @@
-import { Navbar } from "@/components/navbar";
-import { ProductGrid } from "@/components/product-grid";
+import { Navbar } from "@/src/components/navbar";
+import { ProductGrid } from "@/src/components/product-grid";
 import { PRODUCTS, CATEGORIES } from "@/src/lib/products";
 import Link from "next/link";
 
