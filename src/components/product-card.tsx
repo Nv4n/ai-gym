@@ -1,14 +1,14 @@
 "use client";
 
-import type { Product } from "@/lib/products";
-import { Button } from "@/components/ui/button";
+import type { Product } from "@/src/lib/products";
+import { Button } from "@/src/components/ui/button";
 import {
 	Card,
 	CardDescription,
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
+} from "@/src/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
 

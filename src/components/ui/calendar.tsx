@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 
-import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/src/lib/utils"; 
+import { Button, buttonVariants } from "@/src/components/ui/button";
 
 function Calendar({
 	className,
@@ -18,7 +18,7 @@ function Calendar({
 	captionLayout = "label",
 	buttonVariant = "ghost",
 	formatters,
-	components,
+	src/components,
 	...props
 }: React.ComponentProps<typeof DayPicker> & {
 	buttonVariant?: React.ComponentProps<typeof Button>["variant"];
@@ -133,7 +133,7 @@ function Calendar({
 				hidden: cn("invisible", defaultClassNames.hidden),
 				...classNames,
 			}}
-			components={{
+			src/components={{
 				Root: ({ className, rootRef, ...props }) => {
 					return (
 						<div
@@ -180,7 +180,7 @@ function Calendar({
 						</td>
 					);
 				},
-				...components,
+				...src/components,
 			}}
 			{...props}
 		/>
