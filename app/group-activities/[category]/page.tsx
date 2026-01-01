@@ -19,6 +19,7 @@ export default function CategoryPage({
 }: {
 	params: { category: string };
 }) {
+	
 	const category = CATEGORIES.find((c) => c.id === params.category);
 
 	if (!category) {
