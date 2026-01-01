@@ -90,6 +90,7 @@ export function ReservationModal({
 							<Calendar
 								selected={selectedDate}
 								onSelect={setSelectedDate}
+								mode="single"
 							/>
 						</div>
 
