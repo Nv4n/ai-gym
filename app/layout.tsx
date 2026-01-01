@@ -9,6 +9,30 @@ import {
 } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+
+export const metadata: Metadata = {
+	title: "Gym Store",
+	description: "Premium gym supplements and equipment",
+	generator: "v0.app",
+	icons: {
+		icon: [
+			{
+				url: "/icon-light-32x32.png",
+				media: "(prefers-color-scheme: light)",
+			},
+			{
+				url: "/icon-dark-32x32.png",
+				media: "(prefers-color-scheme: dark)",
+			},
+			{
+				url: "/icon.svg",
+				type: "image/svg+xml",
+			},
+		],
+		apple: "/apple-icon.png",
+	},
+};
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -50,6 +74,7 @@ export default function RootLayout({
 						</SignedIn>
 					</header>
 					{children}
+					<Analytics />
 				</body>
 			</html>
 		</ClerkProvider>
