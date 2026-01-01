@@ -1,7 +1,7 @@
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/src/components/navbar";
 import { WORKOUTS } from "@/src/lib/gym-data";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/src/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
 import { Clock, Dumbbell, Target } from "lucide-react";
 import { notFound } from "next/navigation";
 import { choosePlan } from "@/app/actions/gym";

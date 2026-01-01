@@ -1,18 +1,18 @@
 "use client";
 
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/src/components/navbar";
 import { GROUP_ACTIVITIES } from "@/src/lib/group-activities";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar";
+import { Badge } from "@/src/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Calendar } from "@/src/components/ui/calendar";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/src/components/ui/dialog";
 import { Clock, Users, Award, CalendarIcon, MapPin } from "lucide-react";
 import { notFound } from "next/navigation";
 import { useState } from "react";
