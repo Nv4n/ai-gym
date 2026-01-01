@@ -12,28 +12,30 @@ export function generateStaticParams() {
 	}));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-	const workout = WORKOUTS.find((w) => w.id === params.slug);
-	if (!workout) return { title: "Workout Not Found" };
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
+    const workout = WORKOUTS.find((w) => w.id === params.slug);
+    if (!workout) return { title: "Workout Not Found" };
 
-	return {
+    return {
 		title: `${workout.name} - FitHub Gym`,
 		description: workout.description,
 	};
 }
 
-export default function WorkoutDetailPage({
-	params,
-}: {
-	params: { slug: string };
-}) {
-	const workout = WORKOUTS.find((w) => w.id === params.slug);
+export default async function WorkoutDetailPage(
+    props: {
+        params: Promise<{ slug: string }>;
+    }
+) {
+    const params = await props.params;
+    const workout = WORKOUTS.find((w) => w.id === params.slug);
 
-	if (!workout) {
+    if (!workout) {
 		notFound();
 	}
 
-	return (
+    return (
 		<>
 			<Navbar />
 			<main className="min-h-screen bg-background">

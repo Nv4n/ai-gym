@@ -15,7 +15,7 @@ import {
 } from "@/src/components/ui/dialog";
 import { Clock, Users, Award, CalendarIcon, MapPin } from "lucide-react";
 import { notFound } from "next/navigation";
-import { useState } from "react";
+import { useState, use } from "react";
 
 const TIME_SLOTS_BY_DAY: Record<string, string[]> = {
 	Mon: [
@@ -76,29 +76,30 @@ const TIME_SLOTS_BY_DAY: Record<string, string[]> = {
 	Sun: ["8:00 AM", "9:00 AM", "3:00 PM", "4:00 PM", "5:00 PM"],
 };
 
-export default function ClassDetailPage({
-	params,
-}: {
-	params: { category: string; slug: string };
-}) {
-	const activity = GROUP_ACTIVITIES.find((c) => c.id === params.slug);
-	const [modalOpen, setModalOpen] = useState(false);
-	const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+export default function ClassDetailPage(
+    props: {
+        params: Promise<{ category: string; slug: string }>;
+    }
+) {
+    const params = use(props.params);
+    const activity = GROUP_ACTIVITIES.find((c) => c.id === params.slug);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(
 		undefined
 	);
-	const [selectedTime, setSelectedTime] = useState<string | null>(null);
-	const [isReserving, setIsReserving] = useState(false);
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const [isReserving, setIsReserving] = useState(false);
 
-	if (!activity || activity.category !== params.category) {
+    if (!activity || activity.category !== params.category) {
 		notFound();
 	}
 
-	const dayOfWeek = selectedDate?.toLocaleDateString("en-US", {
+    const dayOfWeek = selectedDate?.toLocaleDateString("en-US", {
 		weekday: "short",
 	});
-	const availableTimes = dayOfWeek ? TIME_SLOTS_BY_DAY[dayOfWeek] || [] : [];
+    const availableTimes = dayOfWeek ? TIME_SLOTS_BY_DAY[dayOfWeek] || [] : [];
 
-	const handleReserveClick = () => {
+    const handleReserveClick = () => {
 		// Note: Clerk authentication - uncomment in production
 		// const { isSignedIn } = useAuth()
 		// if (!isSignedIn) {
@@ -108,7 +109,7 @@ export default function ClassDetailPage({
 		setModalOpen(true);
 	};
 
-	const handleConfirmReservation = async () => {
+    const handleConfirmReservation = async () => {
 		if (!selectedDate || !selectedTime) return;
 
 		setIsReserving(true);
@@ -132,7 +133,7 @@ export default function ClassDetailPage({
 		);
 	};
 
-	return (
+    return (
 		<>
 			<Navbar />
 			<main className="min-h-screen bg-background">

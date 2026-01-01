@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import { use } from "react";
 
 import { Navbar } from "@/src/components/navbar";
 import {
@@ -14,23 +15,24 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Clock, Users, Award } from "lucide-react";
 
-export default function CategoryPage({
-	params,
-}: {
-	params: { category: string };
-}) {
-	
-	const category = CATEGORIES.find((c) => c.id === params.category);
+export default function CategoryPage(
+    props: {
+        params: Promise<{ category: string }>;
+    }
+) {
+    const params = use(props.params);
 
-	if (!category) {
+    const category = CATEGORIES.find((c) => c.id === params.category);
+
+    if (!category) {
 		notFound();
 	}
 
-	const classes = GROUP_ACTIVITIES.filter(
+    const classes = GROUP_ACTIVITIES.filter(
 		(c) => c.category === params.category
 	);
 
-	return (
+    return (
 		<>
 			<Navbar />
 			<main className="min-h-screen bg-background">
