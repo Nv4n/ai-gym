@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "@/src/components/ui/button";
 import {
 	DropdownMenu,
@@ -12,8 +12,10 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 
 export function Navbar() {
+	const { user } = useUser();
 	return (
 		<nav className="border-b bg-background">
+			<p>{user?.unsafeMetadata?.address as string}</p>
 			<div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 				{/* Logo */}
 				<div className="flex items-center gap-2">
