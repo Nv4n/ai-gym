@@ -1,5 +1,5 @@
-import { Navbar } from "@/components/navbar"
-import { Button } from "@/components/ui/button"
+import { Navbar } from "@/src/components/navbar"
+import { Button } from "@/src/components/ui/button"
 import { CheckCircle } from "lucide-react"
 
 export const metadata = {
@@ -19,8 +19,6 @@ export default function WorkoutWithTrainerPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="min-h-screen bg-background">
         <div className="mx-auto max-w-4xl px-4 py-12">
           <div className="mb-12 text-center">
             <h1 className="text-4xl font-bold mb-4">Workout with a Trainer</h1>
@@ -49,7 +47,6 @@ export default function WorkoutWithTrainerPage() {
             <Button size="lg">Book Free Consultation</Button>
           </div>
         </div>
-      </main>
     </>
   )
 }
