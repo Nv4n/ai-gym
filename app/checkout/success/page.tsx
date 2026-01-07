@@ -11,8 +11,6 @@ export const metadata = {
 export default function CheckoutSuccessPage() {
 	return (
 		<>
-			<Navbar />
-			<main className="min-h-screen bg-background flex items-center justify-center">
 				<div className="mx-auto max-w-md px-4 text-center py-12">
 					<div className="mb-6 flex justify-center">
 						<CheckCircle2 className="h-16 w-16 text-green-600" />
@@ -38,7 +36,6 @@ export default function CheckoutSuccessPage() {
 						</Button>
 					</div>
 				</div>
-			</main>
 		</>
 	);
 }

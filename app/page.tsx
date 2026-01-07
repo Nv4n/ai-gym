@@ -62,7 +62,9 @@ export default function Home() {
 
 	return (
 		<>
-			<Navbar />
+			<header>
+				<Navbar />
+			</header>
 			<main className="min-h-screen">
 				{/* Hero Section */}
 				<section className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground py-20">

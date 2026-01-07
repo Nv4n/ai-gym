@@ -48,48 +48,45 @@ export default function GymPage() {
 
 	return (
 		<>
-			<Navbar />
-			<main className="min-h-screen bg-background">
-				<div className="mx-auto max-w-7xl px-4 py-12">
-					<div className="mb-12 text-center">
-						<h1 className="text-4xl font-bold mb-4">
-							Your Fitness Hub
-						</h1>
-						<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-							Everything you need to reach your fitness goals.
-							Access pre-made plans, work with trainers, or let AI
-							create custom workouts and diet plans just for you.
-						</p>
-					</div>
-
-					<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-						{features.map((feature) => {
-							const Icon = feature.icon;
-							return (
-								<Link
-									key={feature.title}
-									href={feature.href}
-									className="group rounded-lg border border-border p-6 hover:border-primary hover:bg-muted transition-colors"
-								>
-									<div className="flex items-start gap-4">
-										<div className={`${feature.color}`}>
-											<Icon className="h-8 w-8" />
-										</div>
-										<div className="flex-1">
-											<h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-												{feature.title}
-											</h3>
-											<p className="text-muted-foreground text-sm">
-												{feature.description}
-											</p>
-										</div>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
+			<div className="mx-auto max-w-7xl px-4 py-12">
+				<div className="mb-12 text-center">
+					<h1 className="text-4xl font-bold mb-4">
+						Your Fitness Hub
+					</h1>
+					<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+						Everything you need to reach your fitness goals. Access
+						pre-made plans, work with trainers, or let AI create
+						custom workouts and diet plans just for you.
+					</p>
 				</div>
-			</main>
+
+				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{features.map((feature) => {
+						const Icon = feature.icon;
+						return (
+							<Link
+								key={feature.title}
+								href={feature.href}
+								className="group rounded-lg border border-border p-6 hover:border-primary hover:bg-muted transition-colors"
+							>
+								<div className="flex items-start gap-4">
+									<div className={`${feature.color}`}>
+										<Icon className="h-8 w-8" />
+									</div>
+									<div className="flex-1">
+										<h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+											{feature.title}
+										</h3>
+										<p className="text-muted-foreground text-sm">
+											{feature.description}
+										</p>
+									</div>
+								</div>
+							</Link>
+						);
+					})}
+				</div>
+			</div>
 		</>
 	);
 }

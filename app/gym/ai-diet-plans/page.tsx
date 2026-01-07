@@ -59,9 +59,7 @@ export default function AIDietPlansPage() {
 	};
 
 	return (
-		<>
-			<Navbar />
-			<main className="min-h-screen bg-background">
+
 				<div className="mx-auto max-w-4xl px-4 py-12">
 					<div className="mb-12 text-center">
 						<div className="flex items-center justify-center gap-2 mb-4">
