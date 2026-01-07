@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { ChevronDown } from "lucide-react";
-import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { ThemeProvider } from "@/src/components/theme-provider";
 import { Button } from "@/src/components/ui/button";
 import {
 	DropdownMenu,
@@ -10,6 +8,17 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { ModeToggle } from "@/src/components/ui/mode-toggle";
+import {
+	SignedIn,
+	SignedOut,
+	SignInButton,
+	SignOutButton,
+	SignUpButton,
+	useUser,
+} from "@clerk/nextjs";
+import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 export function Navbar() {
 	const { user } = useUser();
@@ -93,20 +102,22 @@ export function Navbar() {
 						</Button>
 					</SignedIn>
 				</div>
-
 				{/* Auth Actions */}
 				<div className="flex items-center gap-4">
 					<SignedOut>
-						<Button asChild variant="outline">
-							<Link href="/sign-in">Sign In</Link>
-						</Button>
-						<Button asChild>
-							<Link href="/sign-up">Sign Up</Link>
-						</Button>
+						<SignInButton mode="modal">
+							<Button variant="outline">Sign in</Button>
+						</SignInButton>
+						<SignUpButton mode="modal">
+							<Button>Sign Up</Button>
+						</SignUpButton>
 					</SignedOut>
 					<SignedIn>
-						<UserButton afterSignOutUrl="/" />
+						<SignOutButton redirectUrl="/">
+							<Button>Sign out</Button>
+						</SignOutButton>
 					</SignedIn>
+					<ModeToggle />
 				</div>
 			</div>
 		</nav>
