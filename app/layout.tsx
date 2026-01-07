@@ -12,6 +12,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { Navbar } from "@/src/components/navbar";
 import { Toaster } from "@/src/components/ui/sonner";
+import { ThemeProvider } from "@/src/components/theme-provider";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -52,20 +53,27 @@ export default function RootLayout({
 }>) {
 	return (
 		<ClerkProvider>
-			<html lang="en">
+			<html lang="en" suppressHydrationWarning>
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				>
-					<Toaster />
-					<header>
-						<Navbar />
-					</header>
-					<main className="min-h-screen bg-background">
-						{" "}
-						{children}
-					</main>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<Toaster />
+						<header>
+							<Navbar />
+						</header>
+						<main className="min-h-screen bg-background">
+							{" "}
+							{children}
+						</main>
 
-					<Analytics />
+						<Analytics />
+					</ThemeProvider>
 				</body>
 			</html>
 		</ClerkProvider>

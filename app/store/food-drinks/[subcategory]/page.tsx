@@ -62,24 +62,21 @@ export default async function SubcategoryPage({
 
 	return (
 		<>
-			<Navbar />
-			<main className="min-h-screen bg-background">
-				<div className="mx-auto max-w-7xl px-4 py-12">
-					<div className="mb-12">
-						<h1 className="text-4xl font-bold mb-4">
-							{subcategoryData.name}
-						</h1>
-						<p className="text-lg text-muted-foreground">
-							{subcategoryData.description}
-						</p>
-						<p className="text-sm text-muted-foreground mt-2">
-							{products.length} products available
-						</p>
-					</div>
-
-					<ProductGrid products={products} />
+			<div className="mx-auto max-w-7xl px-4 py-12">
+				<div className="mb-12">
+					<h1 className="text-4xl font-bold mb-4">
+						{subcategoryData.name}
+					</h1>
+					<p className="text-lg text-muted-foreground">
+						{subcategoryData.description}
+					</p>
+					<p className="text-sm text-muted-foreground mt-2">
+						{products.length} products available
+					</p>
 				</div>
-			</main>
+
+				<ProductGrid products={products} />
+			</div>
 		</>
 	);
 }

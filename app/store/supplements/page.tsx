@@ -14,22 +14,19 @@ export default function SupplementsPage() {
 
 	return (
 		<>
-			<Navbar />
-			<main className="min-h-screen bg-background">
-				<div className="mx-auto max-w-7xl px-4 py-12">
-					<div className="mb-12">
-						<h1 className="text-balance text-4xl font-bold mb-4">
-							Supplements
-						</h1>
-						<p className="text-pretty text-lg text-muted-foreground">
-							Premium nutritional supplements to fuel your fitness
-							journey and maximize recovery
-						</p>
-					</div>
-
-					<ProductGrid products={supplementProducts} />
+			<div className="mx-auto max-w-7xl px-4 py-12">
+				<div className="mb-12">
+					<h1 className="text-balance text-4xl font-bold mb-4">
+						Supplements
+					</h1>
+					<p className="text-pretty text-lg text-muted-foreground">
+						Premium nutritional supplements to fuel your fitness
+						journey and maximize recovery
+					</p>
 				</div>
-			</main>
+
+				<ProductGrid products={supplementProducts} />
+			</div>
 		</>
 	);
 }
