@@ -1,3 +1,4 @@
+import { Navbar } from "@/src/components/navbar";
 import { ProductGrid } from "@/src/components/product-grid";
 import { PRODUCTS } from "@/src/lib/products";
 
@@ -13,17 +14,20 @@ export default function EquipmentPage() {
 
 	return (
 		<>
-			<div className="mx-auto max-w-7xl px-4 py-12">
-				<div className="mb-12">
-					<h1 className="text-4xl font-bold mb-4">Equipment</h1>
-					<p className="text-lg text-muted-foreground">
-						Premium gym equipment and accessories for all fitness
-						levels
-					</p>
-				</div>
+			<Navbar />
+			<main className="min-h-screen bg-background">
+				<div className="mx-auto max-w-7xl px-4 py-12">
+					<div className="mb-12">
+						<h1 className="text-4xl font-bold mb-4">Equipment</h1>
+						<p className="text-lg text-muted-foreground">
+							Premium gym equipment and accessories for all
+							fitness levels
+						</p>
+					</div>
 
-				<ProductGrid products={equipmentProducts} />
-			</div>
+					<ProductGrid products={equipmentProducts} />
+				</div>
+			</main>
 		</>
 	);
 }

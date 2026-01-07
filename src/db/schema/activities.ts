@@ -5,8 +5,8 @@ import {
 	integer,
 	timestamp,
 	unique,
-	text,
 } from "drizzle-orm/pg-core";
+import { users } from "./users";
 
 export const activities = pgTable("activities", {
 	id: uuid("id").defaultRandom().primaryKey(),
@@ -19,7 +19,9 @@ export const bookings = pgTable(
 	"bookings",
 	{
 		id: uuid("id").defaultRandom().primaryKey(),
-		userId: text("user_id").notNull(),
+		userId: uuid("user_id")
+			.references(() => users.id)
+			.notNull(),
 		activityId: uuid("activity_id")
 			.references(() => activities.id)
 			.notNull(),

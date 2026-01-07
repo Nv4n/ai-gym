@@ -1,3 +1,4 @@
+// import { createClient } from "@/src/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Calendar, Dumbbell, ShoppingBag } from "lucide-react";
 import {
@@ -8,9 +9,6 @@ import {
 } from "@/src/components/ui/card";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
-import { db } from "@/src/db/db";
-import { auth, currentUser } from "@clerk/nextjs/server";
 
 export const metadata = {
 	title: "Dashboard - FitHub Gym",
@@ -18,48 +16,48 @@ export const metadata = {
 };
 
 export default async function DashboardPage() {
-	const authUser = await currentUser();
+	// const supabase = await createClient();
 
-	if (!authUser) {
-		redirect("/sign-in");
-	}
+	//   const {
+	//     data: { user: authUser },
+	//   } = await supabase.auth.getUser()
 
-	if (authUser.publicMetadata?.role === "admin") {
+	//  // if (!authUser) {
+	//  //   redirect("/auth/login")
+	//  // }
+
+	//   // Get user data with role
+	//   const { data: user } = await supabase.from("users").select("*").eq("id", authUser.id).single()
+
+	// Redirect admins to admin dashboard
+	if (false) {
 		redirect("/dashboard/admin");
 	}
 
-const 
-
-	// Fetch user's data
-	const [ordersResult, reservationsResult, workoutPlansResult] =
-		await Promise.all([
-		,
-			db
-				.select()
-				.from(activity_reservations)
-				.where(
-					and(
-						eq(activity_reservations.user_id, authUser.id),
-						eq(activity_reservations.status, "confirmed"),
-						gte(
-							activity_reservations.reservation_date,
-							new Date().toISOString().split("T")[0]
-						)
-					)
-				)
-				.orderBy(asc(activity_reservations.reservation_date))
-				.limit(5),
-			db
-				.select()
-				.from(workout_plans)
-				.where(
-					and(
-						eq(workout_plans.user_id, authUser.id),
-						eq(workout_plans.status, "active")
-					)
-				)
-				.limit(1),
-		]);
+	// // Fetch user's data
+	// const [ordersResult, reservationsResult, workoutPlansResult] =
+	// 	await Promise.all([
+	// 		supabase
+	// 			.from("orders")
+	// 			.select("*")
+	// 			.eq("user_id", authUser.id)
+	// 			.order("created_at", { ascending: false })
+	// 			.limit(5),
+	// 		supabase
+	// 			.from("activity_reservations")
+	// 			.select("*")
+	// 			.eq("user_id", authUser.id)
+	// 			.eq("status", "confirmed")
+	// 			.gte("reservation_date", new Date().toISOString().split("T")[0])
+	// 			.order("reservation_date", { ascending: true })
+	// 			.limit(5),
+	// 		supabase
+	// 			.from("workout_plans")
+	// 			.select("*")
+	// 			.eq("user_id", authUser.id)
+	// 			.eq("status", "active")
+	// 			.limit(1),
+	// 	]);
 
 	const orders = ordersResult.data || [];
 	const reservations = reservationsResult.data || [];

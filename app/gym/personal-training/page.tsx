@@ -106,7 +106,7 @@ export default function PersonalTrainingPage() {
 				window.location.href = result.url;
 			}
 		} catch (error) {
-			console.error("[v0] Booking error:", error);
+			console.error("Booking error:", error);
 			alert("Failed to create booking. Please try again.");
 		} finally {
 			setIsBooking(false);
@@ -115,236 +115,247 @@ export default function PersonalTrainingPage() {
 
 	return (
 		<>
-			<div className="mx-auto max-w-7xl px-4 py-12">
-				<div className="mb-12">
-					<h1 className="text-balance text-4xl font-bold mb-4">
-						Personal Training
-					</h1>
-					<p className="text-pretty text-lg text-muted-foreground">
-						Book one-on-one sessions with our certified trainers
-					</p>
-				</div>
+			<Navbar />
+			<main className="min-h-screen bg-background">
+				<div className="mx-auto max-w-7xl px-4 py-12">
+					<div className="mb-12">
+						<h1 className="text-balance text-4xl font-bold mb-4">
+							Personal Training
+						</h1>
+						<p className="text-pretty text-lg text-muted-foreground">
+							Book one-on-one sessions with our certified trainers
+						</p>
+					</div>
 
-				<div className="grid lg:grid-cols-3 gap-8">
-					{/* Trainer Selection */}
-					<div className="lg:col-span-2 space-y-6">
-						<div>
-							<h2 className="text-2xl font-semibold mb-6">
-								Select Your Trainer
-							</h2>
-							<div className="grid md:grid-cols-2 gap-4">
-								{TRAINERS.map((trainerOption) => (
-									<Card
-										key={trainerOption.id}
-										className={`cursor-pointer transition-all ${
-											selectedTrainer === trainerOption.id
-												? "border-primary ring-2 ring-primary"
-												: "hover:border-primary/50"
-										}`}
-										onClick={() =>
-											setSelectedTrainer(trainerOption.id)
-										}
-									>
-										<CardHeader>
-											<div className="flex items-start justify-between">
-												<div>
-													<CardTitle className="text-lg">
-														{trainerOption.name}
-													</CardTitle>
-													<CardDescription>
-														{
-															trainerOption.specialty
-														}
-													</CardDescription>
+					<div className="grid lg:grid-cols-3 gap-8">
+						{/* Trainer Selection */}
+						<div className="lg:col-span-2 space-y-6">
+							<div>
+								<h2 className="text-2xl font-semibold mb-6">
+									Select Your Trainer
+								</h2>
+								<div className="grid md:grid-cols-2 gap-4">
+									{TRAINERS.map((trainerOption) => (
+										<Card
+											key={trainerOption.id}
+											className={`cursor-pointer transition-all ${
+												selectedTrainer ===
+												trainerOption.id
+													? "border-primary ring-2 ring-primary"
+													: "hover:border-primary/50"
+											}`}
+											onClick={() =>
+												setSelectedTrainer(
+													trainerOption.id
+												)
+											}
+										>
+											<CardHeader>
+												<div className="flex items-start justify-between">
+													<div>
+														<CardTitle className="text-lg">
+															{trainerOption.name}
+														</CardTitle>
+														<CardDescription>
+															{
+																trainerOption.specialty
+															}
+														</CardDescription>
+													</div>
+													<Badge
+														variant="secondary"
+														className="flex items-center gap-1"
+													>
+														<Star className="h-3 w-3 fill-current" />
+														{trainerOption.rating}
+													</Badge>
 												</div>
-												<Badge
-													variant="secondary"
-													className="flex items-center gap-1"
-												>
-													<Star className="h-3 w-3 fill-current" />
-													{trainerOption.rating}
-												</Badge>
-											</div>
-										</CardHeader>
-										<CardContent>
-											<p className="text-sm text-muted-foreground mb-3">
-												{trainerOption.bio}
-											</p>
-											<div className="flex items-center justify-between">
-												<div className="flex items-center gap-2 text-sm text-muted-foreground">
-													<Award className="h-4 w-4" />
-													<span>
-														{
-															trainerOption.experience
-														}
+											</CardHeader>
+											<CardContent>
+												<p className="text-sm text-muted-foreground mb-3">
+													{trainerOption.bio}
+												</p>
+												<div className="flex items-center justify-between">
+													<div className="flex items-center gap-2 text-sm text-muted-foreground">
+														<Award className="h-4 w-4" />
+														<span>
+															{
+																trainerOption.experience
+															}
+														</span>
+													</div>
+													<span className="text-lg font-bold">
+														${trainerOption.price}
 													</span>
 												</div>
-												<span className="text-lg font-bold">
-													${trainerOption.price}
-												</span>
+											</CardContent>
+										</Card>
+									))}
+								</div>
+							</div>
+
+							{/* Date Selection */}
+							{selectedTrainer && (
+								<div>
+									<h2 className="text-2xl font-semibold mb-6">
+										Choose a Date
+									</h2>
+									<Card>
+										<CardContent className="p-6">
+											<Calendar
+												mode="single"
+												selected={selectedDate}
+												onSelect={setSelectedDate}
+												disabled={(date) =>
+													date < new Date()
+												}
+												className="rounded-md border"
+											/>
+										</CardContent>
+									</Card>
+								</div>
+							)}
+
+							{/* Time Selection */}
+							{selectedTrainer && selectedDate && (
+								<div>
+									<h2 className="text-2xl font-semibold mb-6">
+										Select Time Slot
+									</h2>
+									<Card>
+										<CardContent className="p-6">
+											<div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+												{TIME_SLOTS.map((time) => (
+													<Button
+														key={time}
+														variant={
+															selectedTime ===
+															time
+																? "default"
+																: "outline"
+														}
+														size="sm"
+														onClick={() =>
+															setSelectedTime(
+																time
+															)
+														}
+														className="w-full"
+													>
+														<Clock className="h-3 w-3 mr-1" />
+														{time}
+													</Button>
+												))}
 											</div>
 										</CardContent>
 									</Card>
-								))}
-							</div>
+								</div>
+							)}
 						</div>
 
-						{/* Date Selection */}
-						{selectedTrainer && (
-							<div>
-								<h2 className="text-2xl font-semibold mb-6">
-									Choose a Date
-								</h2>
-								<Card>
-									<CardContent className="p-6">
-										<Calendar
-											mode="single"
-											selected={selectedDate}
-											onSelect={setSelectedDate}
-											disabled={(date) =>
-												date < new Date()
-											}
-											className="rounded-md border"
-										/>
-									</CardContent>
-								</Card>
-							</div>
-						)}
-
-						{/* Time Selection */}
-						{selectedTrainer && selectedDate && (
-							<div>
-								<h2 className="text-2xl font-semibold mb-6">
-									Select Time Slot
-								</h2>
-								<Card>
-									<CardContent className="p-6">
-										<div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-											{TIME_SLOTS.map((time) => (
-												<Button
-													key={time}
-													variant={
-														selectedTime === time
-															? "default"
-															: "outline"
-													}
-													size="sm"
-													onClick={() =>
-														setSelectedTime(time)
-													}
-													className="w-full"
-												>
-													<Clock className="h-3 w-3 mr-1" />
-													{time}
-												</Button>
-											))}
-										</div>
-									</CardContent>
-								</Card>
-							</div>
-						)}
-					</div>
-
-					{/* Booking Summary */}
-					<div className="lg:col-span-1">
-						<Card className="sticky top-4">
-							<CardHeader>
-								<CardTitle>Booking Summary</CardTitle>
-								<CardDescription>
-									Review your session details
-								</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								{trainer ? (
-									<>
-										<div>
-											<p className="text-sm text-muted-foreground">
-												Trainer
-											</p>
-											<p className="font-semibold">
-												{trainer.name}
-											</p>
-											<p className="text-sm text-muted-foreground">
-												{trainer.specialty}
-											</p>
-										</div>
-
-										{selectedDate && (
+						{/* Booking Summary */}
+						<div className="lg:col-span-1">
+							<Card className="sticky top-4">
+								<CardHeader>
+									<CardTitle>Booking Summary</CardTitle>
+									<CardDescription>
+										Review your session details
+									</CardDescription>
+								</CardHeader>
+								<CardContent className="space-y-4">
+									{trainer ? (
+										<>
 											<div>
 												<p className="text-sm text-muted-foreground">
-													Date
+													Trainer
 												</p>
 												<p className="font-semibold">
-													{selectedDate.toLocaleDateString(
-														"en-US",
-														{
-															weekday: "long",
-															year: "numeric",
-															month: "long",
-															day: "numeric",
-														}
-													)}
+													{trainer.name}
 												</p>
-											</div>
-										)}
-
-										{selectedTime && (
-											<div>
 												<p className="text-sm text-muted-foreground">
-													Time
-												</p>
-												<p className="font-semibold">
-													{selectedTime}
+													{trainer.specialty}
 												</p>
 											</div>
-										)}
 
-										<div className="border-t border-border pt-4">
-											<div className="flex items-center justify-between mb-2">
-												<span className="text-sm text-muted-foreground">
-													Session (60 min)
-												</span>
-												<span className="font-semibold">
-													${trainer.price}
-												</span>
+											{selectedDate && (
+												<div>
+													<p className="text-sm text-muted-foreground">
+														Date
+													</p>
+													<p className="font-semibold">
+														{selectedDate.toLocaleDateString(
+															"en-US",
+															{
+																weekday: "long",
+																year: "numeric",
+																month: "long",
+																day: "numeric",
+															}
+														)}
+													</p>
+												</div>
+											)}
+
+											{selectedTime && (
+												<div>
+													<p className="text-sm text-muted-foreground">
+														Time
+													</p>
+													<p className="font-semibold">
+														{selectedTime}
+													</p>
+												</div>
+											)}
+
+											<div className="border-t border-border pt-4">
+												<div className="flex items-center justify-between mb-2">
+													<span className="text-sm text-muted-foreground">
+														Session (60 min)
+													</span>
+													<span className="font-semibold">
+														${trainer.price}
+													</span>
+												</div>
+												<div className="flex items-center justify-between text-lg font-bold">
+													<span>Total</span>
+													<span>
+														${trainer.price}
+													</span>
+												</div>
 											</div>
-											<div className="flex items-center justify-between text-lg font-bold">
-												<span>Total</span>
-												<span>${trainer.price}</span>
-											</div>
-										</div>
 
-										<Button
-											className="w-full"
-											size="lg"
-											disabled={
-												!selectedTrainer ||
-												!selectedDate ||
-												!selectedTime ||
-												isBooking
-											}
-											onClick={handleBookSession}
-										>
-											{isBooking
-												? "Processing..."
-												: "Book & Pay"}
-										</Button>
+											<Button
+												className="w-full"
+												size="lg"
+												disabled={
+													!selectedTrainer ||
+													!selectedDate ||
+													!selectedTime ||
+													isBooking
+												}
+												onClick={handleBookSession}
+											>
+												{isBooking
+													? "Processing..."
+													: "Book & Pay"}
+											</Button>
 
-										<p className="text-xs text-muted-foreground text-center">
-											You'll be redirected to secure
-											checkout
+											<p className="text-xs text-muted-foreground text-center">
+												You'll be redirected to secure
+												checkout
+											</p>
+										</>
+									) : (
+										<p className="text-sm text-muted-foreground text-center py-8">
+											Select a trainer to start booking
 										</p>
-									</>
-								) : (
-									<p className="text-sm text-muted-foreground text-center py-8">
-										Select a trainer to start booking
-									</p>
-								)}
-							</CardContent>
-						</Card>
+									)}
+								</CardContent>
+							</Card>
+						</div>
 					</div>
 				</div>
-			</div>
+			</main>
 		</>
 	);
 }

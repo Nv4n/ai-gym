@@ -1,13 +1,27 @@
-import type React from "react";
-import type { Metadata } from "next";
+import { type Metadata } from "next";
+import {
+	ClerkProvider,
+	SignInButton,
+	SignUpButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+} from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { Navbar } from "@/src/components/navbar";
+import { Toaster } from "@/src/components/ui/sonner";
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geistSans = Geist({
+	variable: "--font-geist-sans",
+	subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+	variable: "--font-geist-mono",
+	subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
 	title: "Gym Store",
@@ -39,11 +53,18 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang="en">
-				<body className={`font-sans antialiased`}>
+				<body
+					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				>
+					<Toaster />
 					<header>
 						<Navbar />
 					</header>
-					<main className="min-h-screen">{children}</main>
+					<main className="min-h-screen bg-background">
+						{" "}
+						{children}
+					</main>
+
 					<Analytics />
 				</body>
 			</html>
