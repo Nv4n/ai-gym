@@ -34,38 +34,33 @@ export default function FoodDrinksPage() {
 
 	return (
 		<>
-			<Navbar />
-			<main className="min-h-screen bg-background">
-				<div className="mx-auto max-w-7xl px-4 py-12">
-					<div className="mb-12">
-						<h1 className="text-4xl font-bold mb-4">
-							Food & Drinks
-						</h1>
-						<p className="text-lg text-muted-foreground">
-							Premium nutrition to support your fitness goals and
-							training
-						</p>
-					</div>
-
-					{/* Subcategory Cards */}
-					<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-						{subcategories.map((subcategory) => (
-							<Link
-								key={subcategory.id}
-								href={subcategory.href}
-								className="group rounded-lg border border-border p-6 hover:border-primary hover:bg-muted transition-colors"
-							>
-								<h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-									{subcategory.name}
-								</h3>
-								<p className="text-muted-foreground text-sm">
-									{subcategory.description}
-								</p>
-							</Link>
-						))}
-					</div>
+			<div className="mx-auto max-w-7xl px-4 py-12">
+				<div className="mb-12">
+					<h1 className="text-4xl font-bold mb-4">Food & Drinks</h1>
+					<p className="text-lg text-muted-foreground">
+						Premium nutrition to support your fitness goals and
+						training
+					</p>
 				</div>
-			</main>
+
+				{/* Subcategory Cards */}
+				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{subcategories.map((subcategory) => (
+						<Link
+							key={subcategory.id}
+							href={subcategory.href}
+							className="group rounded-lg border border-border p-6 hover:border-primary hover:bg-muted transition-colors"
+						>
+							<h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+								{subcategory.name}
+							</h3>
+							<p className="text-muted-foreground text-sm">
+								{subcategory.description}
+							</p>
+						</Link>
+					))}
+				</div>
+			</div>
 		</>
 	);
 }
