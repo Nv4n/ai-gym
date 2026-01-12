@@ -63,16 +63,15 @@
     "react-day-picker": "9.13.0",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.70.0",
-    "react-resizable-panels": "^2.1.7",
-    "recharts": "2.15.4",
+    "react-resizable-panels": "^4.4.0",
+    "recharts": "3.6.0",
     "server-only": "0.0.1",
-    "sonner": "^1.7.4",
+    "sonner": "^2.0.7",
     "stripe": "^20.1.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "zod": "^4.3.5",
-    "zod-to-json-schema": "^3.25.1"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
