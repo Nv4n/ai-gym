@@ -1,11 +1,11 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/src/components/ui/button"
 import { ShoppingCart } from "lucide-react"
 import { addToCart } from "@/app/actions/cart"
 import { useTransition } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/src/hooks/use-toast"
 
 interface AddToCartButtonProps {
   productId: string

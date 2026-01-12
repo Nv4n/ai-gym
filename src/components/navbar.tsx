@@ -1,6 +1,5 @@
 "use client";
 
-import { ThemeProvider } from "@/src/components/theme-provider";
 import { Button } from "@/src/components/ui/button";
 import {
 	DropdownMenu,
@@ -17,14 +16,16 @@ import {
 	SignUpButton,
 	useUser,
 } from "@clerk/nextjs";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 
 export function Navbar() {
 	const { user } = useUser();
 	return (
 		<nav className="border-b bg-background">
-			<p>{user?.unsafeMetadata?.address as string}</p>
+			{!!user?.unsafeMetadata?.address && (
+				<p>{user.unsafeMetadata.address as string}</p>
+			)}
 			<div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 				{/* Logo */}
 				<div className="flex items-center gap-2">
@@ -113,6 +114,9 @@ export function Navbar() {
 						</SignUpButton>
 					</SignedOut>
 					<SignedIn>
+						<Link href="/cart">
+							<ShoppingCart />
+						</Link>
 						<SignOutButton redirectUrl="/">
 							<Button>Sign out</Button>
 						</SignOutButton>
