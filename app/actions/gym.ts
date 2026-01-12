@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
+import { workoutPlanSchema } from "@/app/actions/schemas/gym";
 
 type WorkoutRequest = {
 	goal: string;
@@ -16,6 +17,86 @@ type DietRequest = {
 	weight: string;
 	allergies: string[];
 };
+// const mockWorkout = {
+// 	name: `Custom ${request.goal} Workout Plan`,
+// 	description: `AI-generated ${
+// 		request.level
+// 	} workout for ${request.goal.toLowerCase()}`,
+// 	duration: "45-60 min",
+// 	difficulty: request.level,
+// 	exercises: [
+// 		{
+// 			name: "Warm-up: Dynamic Stretching",
+// 			sets: "1",
+// 			reps: "5 min",
+// 			rest: "0s",
+// 		},
+// 		{
+// 			name: "Compound Movement",
+// 			sets: "4",
+// 			reps: "8-10",
+// 			rest: "90s",
+// 		},
+// 		{
+// 			name: "Accessory Exercise 1",
+// 			sets: "3",
+// 			reps: "10-12",
+// 			rest: "60s",
+// 		},
+// 		{
+// 			name: "Accessory Exercise 2",
+// 			sets: "3",
+// 			reps: "12-15",
+// 			rest: "60s",
+// 		},
+// 		{
+// 			name: "Isolation Exercise",
+// 			sets: "3",
+// 			reps: "12-15",
+// 			rest: "45s",
+// 		},
+// 		{
+// 			name: "Cool-down: Static Stretching",
+// 			sets: "1",
+// 			reps: "5 min",
+// 			rest: "0s",
+// 		},
+// 	],
+// };
+
+function generateWorkoutPrompt(
+	level: string,
+	goal: string,
+	equipment: string[]
+) {
+	const equipmentList = equipment.join(", ");
+
+	return `
+Generate a comprehensive workout plan based on the following requirements:
+
+The user is at a ${level} fitness level and their primary goal is: ${goal}.
+
+Available equipment: ${equipmentList}.
+
+Create a complete workout session that:
+- Includes a proper warm-up phase (2-10 minutes of dynamic stretching or light cardio)
+- Features 6-15 main exercises that utilize ONLY the available equipment listed above
+- Matches the ${level} difficulty level with appropriate exercise selection, volume, and intensity
+- Directly targets the goal: ${goal}
+- Includes a cool-down phase (1-5 minutes of stretching)
+- Has a total duration of 45-60 minutes
+
+For each exercise, specify:
+- The exact exercise name with any variations (e.g., "Barbell Back Squat" not just "Squats")
+- Number of sets (typically 2-4 depending on experience level)
+- Reps or duration (e.g., "12", "8-10", "30s", "5 min")
+- Weight or intensity (e.g., "12 kg", "Sprint", "Walking", "Walk on 10% incline")
+- Rest periods between sets (e.g., "60s", "90s", "2 min")
+
+Ensure the workout is balanced, safe for the ${level} level, and effectively works toward ${goal}.
+Use proper exercise progression and avoid exercises that would be too advanced or too simple for this level.
+`;
+}
 
 export async function generateAIWorkout(request: WorkoutRequest) {
 	const { userId } = await auth();
@@ -24,60 +105,20 @@ export async function generateAIWorkout(request: WorkoutRequest) {
 		throw new Error("Unauthorized");
 	}
 
-	const workoutPlanSchema = z.object({
-		name: z.string(),
-		description: z.string(),
-		duration: z.string(),
-		difficulty: z.string(),
-		exercises: z.array(
-			z.object({
-				name: z.string(),
-				sets: z.string(),
-				reps: z.string(),
-				rest: z.string(),
-			})
-		),
-	});
+	const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GENAI_API_KEY });
 
-	const ingredientSchema = z.object({
-		name: z.string().describe("Name of the ingredient."),
-		quantity: z
-			.string()
-			.describe("Quantity of the ingredient, including units."),
-	});
-
-	const recipeSchema = z.object({
-		recipe_name: z.string().describe("The name of the recipe."),
-		prep_time_minutes: z
-			.number()
-			.optional()
-			.describe("Optional time in minutes to prepare the recipe."),
-		ingredients: z.array(ingredientSchema),
-		instructions: z.array(z.string()),
-	});
-
-	const ai = new GoogleGenAI({});
-
-	const prompt = `
-Please extract the recipe from the following text.
-The user wants to make delicious chocolate chip cookies.
-They need 2 and 1/4 cups of all-purpose flour, 1 teaspoon of baking soda,
-1 teaspoon of salt, 1 cup of unsalted butter (softened), 3/4 cup of granulated sugar,
-3/4 cup of packed brown sugar, 1 teaspoon of vanilla extract, and 2 large eggs.
-For the best part, they'll need 2 cups of semisweet chocolate chips.
-First, preheat the oven to 375°F (190°C). Then, in a small bowl, whisk together the flour,
-baking soda, and salt. In a large bowl, cream together the butter, granulated sugar, and brown sugar
-until light and fluffy. Beat in the vanilla and eggs, one at a time. Gradually beat in the dry
-ingredients until just combined. Finally, stir in the chocolate chips. Drop by rounded tablespoons
-onto ungreased baking sheets and bake for 9 to 11 minutes.
-`;
+	const prompt = generateWorkoutPrompt(
+		request.level,
+		request.goal,
+		request.equipment
+	);
 
 	const response = await ai.models.generateContent({
 		model: "gemini-2.5-flash",
 		contents: prompt,
 		config: {
 			responseMimeType: "application/json",
-			responseJsonSchema: z.toJSONSchema(recipeSchema),
+			responseJsonSchema: z.toJSONSchema(workoutPlanSchema),
 		},
 	});
 
@@ -86,61 +127,10 @@ onto ungreased baking sheets and bake for 9 to 11 minutes.
 		throw new Error("Error with the model, please try again");
 	}
 
-	const recipe = recipeSchema.parse(JSON.parse(response.text));
-	console.log(recipe);
+	const workout = workoutPlanSchema.parse(JSON.parse(response.text));
+	console.log(workout);
 
-	// Mock AI workout generation
-	// In production, this would call an LLM API
-	await new Promise((resolve) => setTimeout(resolve, 2000));
-
-	const mockWorkout = {
-		name: `Custom ${request.goal} Workout Plan`,
-		description: `AI-generated ${
-			request.level
-		} workout for ${request.goal.toLowerCase()}`,
-		duration: "45-60 min",
-		difficulty: request.level,
-		exercises: [
-			{
-				name: "Warm-up: Dynamic Stretching",
-				sets: "1",
-				reps: "5 min",
-				rest: "0s",
-			},
-			{
-				name: "Compound Movement",
-				sets: "4",
-				reps: "8-10",
-				rest: "90s",
-			},
-			{
-				name: "Accessory Exercise 1",
-				sets: "3",
-				reps: "10-12",
-				rest: "60s",
-			},
-			{
-				name: "Accessory Exercise 2",
-				sets: "3",
-				reps: "12-15",
-				rest: "60s",
-			},
-			{
-				name: "Isolation Exercise",
-				sets: "3",
-				reps: "12-15",
-				rest: "45s",
-			},
-			{
-				name: "Cool-down: Static Stretching",
-				sets: "1",
-				reps: "5 min",
-				rest: "0s",
-			},
-		],
-	};
-
-	return mockWorkout;
+	return workout;
 }
 
 export async function generateAIDietPlan(request: DietRequest) {

@@ -1,7 +1,10 @@
 "use client";
 
-import { Navbar } from "@/src/components/navbar";
+import { generateAIWorkout } from "@/app/actions/gym";
+import { WorkoutPlan } from "@/app/actions/schemas/gym";
+import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
+import { Checkbox } from "@/src/components/ui/checkbox";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import {
@@ -11,13 +14,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/src/components/ui/select";
-import { Checkbox } from "@/src/components/ui/checkbox";
-import { generateAIWorkout } from "@/app/actions/gym";
-import { useState } from "react";
-import { Loader2, Sparkles } from "lucide-react";
-import { Badge } from "@/src/components/ui/badge";
 import { useAuth } from "@clerk/nextjs";
+import { Loader2, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function AIWorkoutsPage() {
 	const { isSignedIn } = useAuth();
@@ -26,16 +27,19 @@ export default function AIWorkoutsPage() {
 	const [level, setLevel] = useState("");
 	const [equipment, setEquipment] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [workout, setWorkout] = useState<any>(null);
+	const [workout, setWorkout] = useState<WorkoutPlan | null>(null);
 
 	const equipmentOptions = [
-		"Dumbbells",
-		"Barbell",
-		"Resistance Bands",
+		"Free Weights",
+		"Barbells",
 		"Kettlebells",
 		"Pull-up Bar",
-		"Bench",
+		"Benches",
 		"Bodyweight Only",
+		"Resistance bands",
+		"Cardio Machines",
+		"Gym machines",
+		"Cable machines",
 	];
 
 	const handleGenerate = async () => {
@@ -55,7 +59,7 @@ export default function AIWorkoutsPage() {
 			setWorkout(result);
 		} catch (error) {
 			console.error("Error generating workout:", error);
-			alert("Failed to generate workout. Please try again.");
+			toast("Failed to generate workout. Please try again.");
 		} finally {
 			setLoading(false);
 		}
@@ -193,7 +197,10 @@ export default function AIWorkoutsPage() {
 							</h3>
 							<div className="grid gap-3">
 								{workout.exercises.map(
-									(exercise: any, idx: number) => (
+									(
+										exercise: WorkoutPlan["exercises"][number],
+										idx: number
+									) => (
 										<div
 											key={idx}
 											className="flex items-center justify-between p-3 rounded-lg bg-muted"
@@ -203,7 +210,8 @@ export default function AIWorkoutsPage() {
 											</span>
 											<span className="text-sm text-muted-foreground">
 												{exercise.sets} sets ×{" "}
-												{exercise.reps}{" "}
+												{exercise.reps}
+												{" • "} {exercise.weight}{" "}
 												{exercise.rest &&
 													`• ${exercise.rest} rest`}
 											</span>
