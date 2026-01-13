@@ -6,7 +6,7 @@ import { Input } from "@/src/components/ui/input";
 import { Trash2, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { updateCartQuantity, removeFromCart } from "@/app/actions/cart";
-import { createCartCheckoutSession } from "@/app/actions/stripe";
+// import { createCartCheckoutSession } from "@/app/actions/stripe";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { CartItem } from "@/src/lib/types";
@@ -127,10 +127,10 @@ CartItemsList.CheckoutButton = function CheckoutButton({
 	const handleCheckout = () => {
 		startTransition(async () => {
 			try {
-				const { url } = await createCartCheckoutSession(cartItems);
-				if (url) {
-					router.push(url);
-				}
+				// const { url } = await createCartCheckoutSession(cartItems);
+				// if (url) {
+				// 	router.push(url);
+				// }
 			} catch (error) {
 				console.error("Checkout failed:", error);
 			}
