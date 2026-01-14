@@ -8,42 +8,18 @@ import {
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function AdminReservationsPage() {
-	const supabase = await createClient();
+	const user = await currentUser();
 
-	const {
-		data: { user: authUser },
-	} = await supabase.auth.getUser();
-
-	//  if (!authUser) {
-	//    redirect("/auth/login")
-	// }
-
-	const { data: currentUser } = await supabase
-		.from("users")
-		.select("*")
-		.eq("id", authUser.id)
-		.single();
-
-	if (currentUser?.role !== "admin") {
-		redirect("/dashboard");
+	if (!user) {
+		redirect("/sign-in");
 	}
 
-	const { data: reservations } = await supabase
-		.from("activity_reservations")
-		.select(
-			`
-      *,
-      user:users(name, email)
-    `
-		)
-		.order("reservation_date", { ascending: false });
-
-	const upcomingReservations =
-		reservations?.filter(
-			(r) => r.reservation_date >= new Date().toISOString().split("T")[0]
-		) || [];
+	if (user?.privateMetadata?.role !== "admin") {
+		redirect("/dashboard");
+	}
 
 	return (
 		<>
@@ -73,7 +49,7 @@ export default async function AdminReservationsPage() {
 										Total Reservations
 									</p>
 									<p className="text-2xl font-bold">
-										{reservations?.length || 0}
+										{/* {reservations?.length || 0} */}
 									</p>
 								</div>
 							</div>
@@ -88,7 +64,7 @@ export default async function AdminReservationsPage() {
 										Upcoming
 									</p>
 									<p className="text-2xl font-bold">
-										{upcomingReservations.length}
+										{/* {upcomingReservations.length} */}
 									</p>
 								</div>
 							</div>
@@ -103,7 +79,7 @@ export default async function AdminReservationsPage() {
 										This Week
 									</p>
 									<p className="text-2xl font-bold">
-										{
+										{/*
 											reservations?.filter((r) => {
 												const resDate = new Date(
 													r.reservation_date
@@ -118,7 +94,7 @@ export default async function AdminReservationsPage() {
 													resDate <= weekFromNow
 												);
 											}).length
-										}
+										*/}
 									</p>
 								</div>
 							</div>
@@ -132,7 +108,7 @@ export default async function AdminReservationsPage() {
 					</CardHeader>
 					<CardContent>
 						<div className="space-y-4">
-							{reservations?.map((reservation) => (
+							{/*reservations?.map((reservation) => (
 								<div
 									key={reservation.id}
 									className="flex items-center justify-between p-4 rounded-lg border"
@@ -168,7 +144,7 @@ export default async function AdminReservationsPage() {
 										{reservation.status}
 									</span>
 								</div>
-							))}
+							))*/}
 						</div>
 					</CardContent>
 				</Card>

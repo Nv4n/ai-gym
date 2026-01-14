@@ -1,43 +1,27 @@
-import { redirect } from "next/navigation";
+import { ProductStockManager } from "@/src/components/admin/product-stock-manager";
+import { Button } from "@/src/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@/src/components/ui/card";
-import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
 import { ArrowLeft, Package } from "lucide-react";
-import { ProductStockManager } from "@/src/components/admin/product-stock-manager";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function AdminProductsPage() {
-	const supabase = await createClient();
+	const user = await currentUser();
 
-	const {
-		data: { user: authUser },
-	} = await supabase.auth.getUser();
-
-	//if (!authUser) {
-	//   redirect("/auth/login")
-	// }
-
-	const { data: currentUser } = await supabase
-		.from("users")
-		.select("*")
-		.eq("id", authUser.id)
-		.single();
-
-	if (currentUser?.role !== "admin") {
-		redirect("/dashboard");
+	if (!user) {
+		redirect("/sign-in");
 	}
 
-	const { data: products } = await supabase
-		.from("products")
-		.select("*")
-		.order("name", { ascending: true });
-
-	const lowStockProducts = products?.filter((p) => p.stock < 10) || [];
+	if (user?.privateMetadata?.role !== "admin") {
+		redirect("/dashboard");
+	}
 
 	return (
 		<>
@@ -57,7 +41,7 @@ export default async function AdminProductsPage() {
 					</p>
 				</div>
 
-				{lowStockProducts.length > 0 && (
+				{/*lowStockProducts.length > 0 && (
 					<Card className="mb-6 border-orange-500/50">
 						<CardHeader>
 							<CardTitle className="text-orange-500 flex items-center gap-2">
@@ -88,17 +72,17 @@ export default async function AdminProductsPage() {
 							</div>
 						</CardContent>
 					</Card>
-				)}
+				)*/}
 
 				<Card>
 					<CardHeader>
 						<CardTitle>
-							All Products ({products?.length || 0})
+							All Products ({/*products?.length || 0*/})
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="space-y-4">
-							{products?.map((product) => (
+							{/*products?.map((product) => (
 								<div
 									key={product.id}
 									className="flex items-center gap-4 p-4 rounded-lg border"
@@ -131,7 +115,7 @@ export default async function AdminProductsPage() {
 										/>
 									</div>
 								</div>
-							))}
+							))*/}
 						</div>
 					</CardContent>
 				</Card>

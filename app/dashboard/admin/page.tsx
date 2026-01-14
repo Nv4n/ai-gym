@@ -13,6 +13,8 @@ import {
 	Package,
 	DollarSign,
 } from "lucide-react";
+import { currentUser } from "@clerk/nextjs/server";
+import { stripe } from "@/src/lib/stripe";
 
 export const metadata = {
 	title: "Admin Dashboard - FitHub Gym",
@@ -20,48 +22,15 @@ export const metadata = {
 };
 
 export default async function AdminDashboardPage() {
-	const supabase = await createClient();
+	const user = await currentUser();
 
-	const {
-		data: { user: authUser },
-	} = await supabase.auth.getUser();
-
-	// if (!authUser) {
-	//    redirect("/auth/login")
-	// }
-
-	// Check if user is admin
-	const { data: user } = await supabase
-		.from("users")
-		.select("*")
-		.eq("id", authUser.id)
-		.single();
-
-	if (user?.role !== "admin") {
-		redirect("/dashboard");
+	if (!user) {
+		redirect("/sign-in");
 	}
 
-	// Fetch admin statistics
-	const [usersResult, ordersResult, reservationsResult, productsResult] =
-		await Promise.all([
-			supabase.from("users").select("*", { count: "exact", head: true }),
-			supabase.from("orders").select("total"),
-			supabase
-				.from("activity_reservations")
-				.select("*", { count: "exact", head: true }),
-			supabase.from("products").select("stock"),
-		]);
-
-	const totalUsers = usersResult.count || 0;
-	const orders = ordersResult.data || [];
-	const totalRevenue = orders.reduce(
-		(sum, order) => sum + Number(order.total),
-		0
-	);
-	const totalReservations = reservationsResult.count || 0;
-	const products = productsResult.data || [];
-	const totalProducts = products.length;
-	const lowStockProducts = products.filter((p) => p.stock < 10).length;
+	if (user?.privateMetadata?.role !== "admin") {
+		redirect("/dashboard");
+	}
 
 	const stats = [
 		{
