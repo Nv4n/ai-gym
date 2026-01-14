@@ -133,7 +133,7 @@ export default function DietPlansPage() {
 							<div className="grid gap-4">
 								{DIET_PLANS.map((planOption) => (
 									<Card
-										key={planOption.id}
+										key={`diet-plan-${planOption.id}`}
 										className={`cursor-pointer transition-all ${
 											selectedPlan === planOption.id
 												? "border-primary ring-2 ring-primary"
@@ -229,7 +229,7 @@ export default function DietPlansPage() {
 													{DIETARY_PREFERENCES.map(
 														(pref) => (
 															<SelectItem
-																key={pref.value}
+																key={`dietary-preference-${pref.value}`}
 																value={
 																	pref.value
 																}
@@ -250,7 +250,7 @@ export default function DietPlansPage() {
 											<div className="grid grid-cols-4 gap-2">
 												{MEALS_PER_DAY.map((num) => (
 													<Button
-														key={num}
+														key={`meals-per-day-${num}`}
 														variant={
 															mealsPerDay === num
 																? "default"
