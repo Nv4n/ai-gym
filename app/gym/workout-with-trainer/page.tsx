@@ -1,4 +1,3 @@
-import { Navbar } from "@/src/components/navbar";
 import { Button } from "@/src/components/ui/button";
 import { CheckCircle } from "lucide-react";
 

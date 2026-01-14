@@ -1,62 +1,70 @@
 "use client";
 
-import { Navbar } from "@/src/components/navbar";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
 import { generateAIDietPlan } from "@/app/actions/gym";
-import { useState } from "react";
-import { Loader2, Brain } from "lucide-react";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/src/components/ui/accordion";
 import { Badge } from "@/src/components/ui/badge";
-import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { Button } from "@/src/components/ui/button";
 import { Checkbox } from "@/src/components/ui/checkbox";
+import {
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+	FieldLegend,
+	FieldSet,
+} from "@/src/components/ui/field";
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/src/components/ui/form";
+import { Input } from "@/src/components/ui/input";
+import { Separator } from "@/src/components/ui/separator";
+import { DietRequest, DietRequestSchema } from "@/src/lib/types/actions";
+import { DietPlan } from "@/src/lib/types/diet";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Brain, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+const allergyOptions = ["Dairy", "Gluten", "Nuts", "Soy", "Eggs", "Shellfish"];
 
 export default function AIDietPlansPage() {
-	const { isSignedIn } = useAuth();
-	const router = useRouter();
-	const [goal, setGoal] = useState("");
-	const [weight, setWeight] = useState("");
-	const [allergies, setAllergies] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [dietPlan, setDietPlan] = useState<any>(null);
+	const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
 
-	const allergyOptions = [
-		"Dairy",
-		"Gluten",
-		"Nuts",
-		"Soy",
-		"Eggs",
-		"Shellfish",
-		"None",
-	];
+	const form = useForm<DietRequest>({
+		resolver: zodResolver(DietRequestSchema),
+		defaultValues: {
+			goal: "",
+			height: "",
+			weight: "",
+			allergies: [],
+		},
+	});
 
-	const handleGenerate = async () => {
-		if (!isSignedIn) {
-			router.push("/sign-in");
-			return;
-		}
-
-		if (!goal || !weight) {
-			alert("Please fill in all fields");
-			return;
-		}
-
+	async function handleGenerate(requestParams: DietRequest) {
 		setLoading(true);
 		try {
-			const result = await generateAIDietPlan({
-				goal,
-				weight,
-				allergies,
-			});
+			const result = await generateAIDietPlan(requestParams);
 			setDietPlan(result);
 		} catch (error) {
-			console.error("Error generating diet plan:", error);
-			alert("Failed to generate diet plan. Please try again.");
+			console.error("Error generating workout:", error);
+			toast("Failed to generate diet plan. Please try again.");
 		} finally {
 			setLoading(false);
 		}
-	};
+	}
 
 	return (
 		<>
@@ -76,85 +84,164 @@ export default function AIDietPlansPage() {
 
 				<div className="rounded-lg border border-border p-8 mb-8">
 					<div className="space-y-6">
-						<div>
-							<Label htmlFor="goal">Nutrition Goal</Label>
-							<Input
-								id="goal"
-								placeholder="e.g., Muscle gain, Fat loss, Maintenance"
-								value={goal}
-								onChange={(e) => setGoal(e.target.value)}
-								className="mt-2"
-							/>
-						</div>
-
-						<div>
-							<Label htmlFor="weight">Current Weight</Label>
-							<Input
-								id="weight"
-								placeholder="e.g., 75kg or 165lbs"
-								value={weight}
-								onChange={(e) => setWeight(e.target.value)}
-								className="mt-2"
-							/>
-						</div>
-
-						<div>
-							<Label className="mb-3 block">
-								Allergies & Restrictions
-							</Label>
-							<div className="grid gap-3 md:grid-cols-2">
-								{allergyOptions.map((item) => (
-									<div
-										key={item}
-										className="flex items-center space-x-2"
-									>
-										<Checkbox
-											id={item}
-											checked={allergies.includes(item)}
-											onCheckedChange={(checked) => {
-												if (checked) {
-													setAllergies([
-														...allergies,
-														item,
-													]);
-												} else {
-													setAllergies(
-														allergies.filter(
-															(a) => a !== item
-														)
-													);
-												}
-											}}
-										/>
-										<label
-											htmlFor={item}
-											className="text-sm cursor-pointer"
-										>
-											{item}
-										</label>
-									</div>
-								))}
-							</div>
-						</div>
-
-						<Button
-							onClick={handleGenerate}
-							disabled={loading}
-							className="w-full"
-							size="lg"
-						>
-							{loading ? (
-								<>
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									Generating...
-								</>
-							) : (
-								<>
-									<Brain className="mr-2 h-4 w-4" />
-									Generate Diet Plan
-								</>
-							)}
-						</Button>
+						<Form {...form}>
+							<form
+								onSubmit={form.handleSubmit(handleGenerate)}
+								className="space-y-8"
+							>
+								<FormField
+									control={form.control}
+									name="goal"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>
+												Nutrition Goal
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder="e.g., Muscle gain, Fat loss, Maintenance"
+													className="mt-2"
+													{...field}
+												/>
+											</FormControl>
+											<FormDescription>
+												This is your public display
+												name.
+											</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="height"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>
+												Current Height
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder="e.g., 175cm or 5'10''"
+													className="mt-2"
+													{...field}
+												/>
+											</FormControl>
+											<FormDescription>
+												This is your public display
+												name.
+											</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="weight"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>
+												Current Weight
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder="e.g., 75kg or 165lbs"
+													className="mt-2"
+													{...field}
+												/>
+											</FormControl>
+											<FormDescription>
+												This is your public display
+												name.
+											</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<Controller
+									name="allergies"
+									control={form.control}
+									render={({ field, fieldState }) => (
+										<FieldSet>
+											<FieldLegend variant="label">
+												Allergies
+											</FieldLegend>
+											<FieldGroup data-slot="checkbox-group">
+												{allergyOptions.map(
+													(allergy, idx) => (
+														<Field
+															key={idx}
+															orientation="horizontal"
+															data-invalid={
+																fieldState.invalid
+															}
+														>
+															<Checkbox
+																id={`form-rhf-checkbox-${idx}`}
+																name={
+																	field.name
+																}
+																aria-invalid={
+																	fieldState.invalid
+																}
+																checked={field.value.includes(
+																	idx.toString()
+																)}
+																onCheckedChange={(
+																	checked
+																) => {
+																	const newValue =
+																		checked
+																			? [
+																					...field.value,
+																					idx.toString(),
+																			  ]
+																			: field.value.filter(
+																					(
+																						value
+																					) =>
+																						value !==
+																						idx.toString()
+																			  );
+																	field.onChange(
+																		newValue
+																	);
+																}}
+															/>
+															<FieldLabel
+																htmlFor={`form-rhf-checkbox-${idx}`}
+																className="font-normal"
+															>
+																{allergy}
+															</FieldLabel>
+														</Field>
+													)
+												)}
+											</FieldGroup>
+											{fieldState.invalid && (
+												<FieldError
+													errors={[fieldState.error]}
+												/>
+											)}
+										</FieldSet>
+									)}
+								/>
+								<Button type="submit">
+									{" "}
+									{loading ? (
+										<>
+											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Generating...
+										</>
+									) : (
+										<>
+											<Brain className="mr-2 h-4 w-4" />
+											Generate Diet Plan
+										</>
+									)}
+								</Button>
+							</form>
+						</Form>
 					</div>
 				</div>
 
@@ -188,23 +275,58 @@ export default function AIDietPlansPage() {
 								Daily Meal Plan
 							</h3>
 							<div className="grid gap-3">
-								{dietPlan.meals.map(
-									(meal: any, idx: number) => (
+								{dietPlan.days.map(
+									(
+										day: DietPlan["days"][number],
+										idx: number
+									) => (
 										<div
-											key={idx}
+											key={`day-${idx}`}
 											className="p-3 rounded-lg bg-muted"
 										>
 											<div className="flex items-center justify-between mb-1">
 												<span className="font-medium">
-													{meal.name}
+													{day.name}
 												</span>
-												<span className="text-sm text-muted-foreground">
-													{meal.time}
-												</span>
+												<Accordion
+													type="single"
+													collapsible
+													className="w-full"
+													defaultValue={`d-1-meal-0`}
+												>
+													{day.meals.map(
+														(
+															meal: DietPlan["days"][number]["meals"][number],
+															mealIdx: number
+														) => (
+															<>
+																<AccordionItem
+																	value={`d-${idx}-meal-${mealIdx}`}
+																>
+																	<AccordionTrigger>
+																		{
+																			meal.name
+																		}
+																	</AccordionTrigger>
+																	<AccordionContent className="flex flex-col gap-4 text-balance">
+																		<p>
+																			{
+																				meal.amount
+																			}
+																		</p>
+																		<p>
+																			{
+																				meal.recipe
+																			}
+																		</p>
+																	</AccordionContent>
+																</AccordionItem>
+																<Separator className="my-4 w-0.5 bg-accent-foreground" />
+															</>
+														)
+													)}
+												</Accordion>
 											</div>
-											<p className="text-sm text-muted-foreground">
-												{meal.description}
-											</p>
 										</div>
 									)
 								)}

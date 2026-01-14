@@ -1,7 +1,6 @@
 "use client";
 
 import { generateAIWorkout } from "@/app/actions/gym";
-import { WorkoutPlan } from "@/app/actions/schemas/gym";
 import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import { Checkbox } from "@/src/components/ui/checkbox";
@@ -14,6 +13,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/src/components/ui/select";
+import { WorkoutPlan } from "@/src/lib/types/workout";
 import { useAuth } from "@clerk/nextjs";
 import { Loader2, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
