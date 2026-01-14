@@ -156,6 +156,7 @@ export async function generateAIDietPlan(request: DietRequest) {
 
 	const diet = DietPlanSchema.parse(JSON.parse(response.text));
 	console.log(diet);
+	console.log(diet.days[0].meals);
 
 	return diet;
 }

@@ -2,7 +2,7 @@ import { Navbar } from "@/src/components/navbar";
 import { Button } from "@/src/components/ui/button";
 import { PRODUCTS } from "@/src/lib/products";
 import { notFound, redirect } from "next/navigation";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -87,19 +87,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
 						{/* Purchase Button */}
 						<div className="space-y-4">
-							<CheckoutButton productId={product.id} />
-
 							<SignedOut>
 								<Button asChild size="lg" className="w-full">
-									<Link href="/sign-in">
-										Sign In to Purchase
-									</Link>
+									<SignInButton
+										mode="modal"
+										fallbackRedirectUrl={`/store/product/${product.id}`}
+									/>
 								</Button>
 								<p className="text-sm text-muted-foreground text-center">
 									Must be signed in to purchase
 								</p>
 							</SignedOut>
 							<SignedIn>
+								<Button size="lg" className="w-full">
+									Add to cart (TO BE DEVELOPED)
+								</Button>
 								<CheckoutButton productId={product.id} />
 							</SignedIn>
 						</div>

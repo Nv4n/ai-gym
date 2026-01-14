@@ -3,8 +3,10 @@
 import { stripe } from "@/src/lib/stripe";
 import { PRODUCTS } from "@/src/lib/products";
 import { headers } from "next/headers";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function createCheckoutSession(productId: string) {
+	const user = await currentUser();
 	const origin: string = (await headers()).get("origin") as string;
 	const product = PRODUCTS.find((p) => p.id === productId);
 
@@ -27,6 +29,13 @@ export async function createCheckoutSession(productId: string) {
 				quantity: 1,
 			},
 		],
+		payment_intent_data: {
+			metadata: {
+				clerk_id: user?.id,
+				clerk_name: `${user?.firstName} ${user?.lastName}`,
+				address: user?.unsafeMetadata?.address,
+			},
+		},
 		mode: "payment",
 		success_url: `${origin}/checkout/success?type=product`,
 		cancel_url: `${origin}/store`,

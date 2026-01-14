@@ -57,6 +57,7 @@ export default function AIDietPlansPage() {
 		setLoading(true);
 		try {
 			const result = await generateAIDietPlan(requestParams);
+			
 			setDietPlan(result);
 		} catch (error) {
 			console.error("Error generating workout:", error);
