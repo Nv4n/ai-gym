@@ -13,6 +13,7 @@ export type Workout = {
 };
 
 export type DietPlan = {
+	id: string;
 	name: string;
 	description: string;
 	calories: string;

@@ -1,7 +1,6 @@
 "use client";
 
-import { Navbar } from "@/src/components/navbar";
-import { DIET_PLANS } from "@/src/lib/gym-data";
+import { createDietPlanCheckout } from "@/app/actions/stripe";
 import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import {
@@ -12,7 +11,6 @@ import {
 	CardTitle,
 } from "@/src/components/ui/card";
 import { Label } from "@/src/components/ui/label";
-import { Slider } from "@/src/components/ui/slider";
 import {
 	Select,
 	SelectContent,
@@ -20,9 +18,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/src/components/ui/select";
-import { useState } from "react";
-import { createDietPlanCheckout } from "@/app/actions/stripe";
+import { Slider } from "@/src/components/ui/slider";
+import { DIET_PLANS } from "@/src/lib/gym-data";
 import { Check } from "lucide-react";
+import { useState } from "react";
 
 const DIETARY_PREFERENCES = [
 	{ value: "balanced", label: "Balanced" },
