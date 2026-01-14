@@ -9,6 +9,7 @@ import {
 } from "@/src/components/ui/card";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const metadata = {
 	title: "Dashboard - FitHub Gym",
@@ -16,52 +17,11 @@ export const metadata = {
 };
 
 export default async function DashboardPage() {
-	// const supabase = await createClient();
+	const user = await currentUser();
 
-	//   const {
-	//     data: { user: authUser },
-	//   } = await supabase.auth.getUser()
-
-	//  // if (!authUser) {
-	//  //   redirect("/auth/login")
-	//  // }
-
-	//   // Get user data with role
-	//   const { data: user } = await supabase.from("users").select("*").eq("id", authUser.id).single()
-
-	// Redirect admins to admin dashboard
-	if (false) {
-		redirect("/dashboard/admin");
-	}
-
-	// // Fetch user's data
-	// const [ordersResult, reservationsResult, workoutPlansResult] =
-	// 	await Promise.all([
-	// 		supabase
-	// 			.from("orders")
-	// 			.select("*")
-	// 			.eq("user_id", authUser.id)
-	// 			.order("created_at", { ascending: false })
-	// 			.limit(5),
-	// 		supabase
-	// 			.from("activity_reservations")
-	// 			.select("*")
-	// 			.eq("user_id", authUser.id)
-	// 			.eq("status", "confirmed")
-	// 			.gte("reservation_date", new Date().toISOString().split("T")[0])
-	// 			.order("reservation_date", { ascending: true })
-	// 			.limit(5),
-	// 		supabase
-	// 			.from("workout_plans")
-	// 			.select("*")
-	// 			.eq("user_id", authUser.id)
-	// 			.eq("status", "active")
-	// 			.limit(1),
-	// 	]);
-
-	const orders = ordersResult.data || [];
-	const reservations = reservationsResult.data || [];
-	const workoutPlans = workoutPlansResult.data || [];
+	const orders: any[] = [];
+	const reservations: any[] = [];
+	const workoutPlans = [];
 
 	const stats = [
 		{
@@ -92,7 +52,7 @@ export default async function DashboardPage() {
 			<div className="mx-auto max-w-7xl px-4 py-12">
 				<div className="mb-12">
 					<h1 className="text-4xl font-bold mb-2">
-						Welcome back, {user?.name || "User"}!
+						Welcome back, {user?.firstName || "User"}!
 					</h1>
 					<p className="text-lg text-muted-foreground">
 						Track your fitness journey and manage your activities
