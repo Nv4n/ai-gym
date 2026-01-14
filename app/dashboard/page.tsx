@@ -10,6 +10,7 @@ import {
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
+import { UserAvatar, UserButton, UserProfile } from "@clerk/nextjs";
 
 export const metadata = {
 	title: "Dashboard - FitHub Gym",
@@ -53,7 +54,11 @@ export default async function DashboardPage() {
 	];
 
 	return (
-		<main className="min-h-screen bg-background">
+		<>
+		<div className="m-4">
+		<UserButton />
+
+		</div>
 			<div className="mx-auto max-w-7xl px-4 py-12">
 				<div className="mb-12">
 					<h1 className="text-4xl font-bold mb-2">

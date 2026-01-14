@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
 import { stripe } from "@/src/lib/stripe";
+import { UserAvatar, UserButton, UserProfile } from "@clerk/nextjs";
 
 export const metadata = {
 	title: "Admin Dashboard - FitHub Gym",
@@ -87,7 +88,13 @@ export default async function AdminDashboardPage() {
 		<>
 			<div className="mx-auto max-w-7xl px-4 py-12">
 				<div className="mb-12">
-					<h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
+					<div className="flex gap-4">
+						<h1 className="text-4xl font-bold mb-2">
+							Admin Dashboard
+						</h1>
+
+						<UserButton />
+					</div>
 					<p className="text-lg text-muted-foreground">
 						Manage your gym business and monitor performance
 					</p>
