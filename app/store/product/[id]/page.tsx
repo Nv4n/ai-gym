@@ -1,11 +1,10 @@
-import { Navbar } from "@/src/components/navbar";
 import { Button } from "@/src/components/ui/button";
 import { PRODUCTS } from "@/src/lib/products";
-import { notFound, redirect } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
 
 interface ProductPageProps {
 	params: Promise<{ id: string }>;

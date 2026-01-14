@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { CartItemsList } from "@/src/components/cart-items-list";
 import { Button } from "@/src/components/ui/button";
 import {
@@ -7,32 +6,18 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/src/components/ui/card";
-import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 import { ShoppingBag } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function CartPage() {
-	const { isSignedIn } = useUser();
+	const { isAuthenticated } = await auth();
 
-	if (!isSignedIn) {
+	if (!isAuthenticated) {
 		redirect("/sign-in");
 	}
-
-	const { data: cartItems, error } = await supabase
-		.from("cart_items")
-		.select(
-			`
-      *,
-      product:products(*)
-    `
-		)
-		.eq("user_id", user.id)
-		.order("created_at", { ascending: false });
-
-	const total =
-		cartItems?.reduce((sum, item) => {
-			return sum + (item.product?.price || 0) * item.quantity;
-		}, 0) || 0;
+	const cartItems: string | any[] = [];
 
 	return (
 		<div className="container mx-auto px-4 py-8">
@@ -74,7 +59,7 @@ export default async function CartPage() {
 									<span className="text-muted-foreground">
 										Subtotal
 									</span>
-									<span>${total.toFixed(2)}</span>
+									<span>{0}</span>
 								</div>
 								<div className="flex justify-between text-sm">
 									<span className="text-muted-foreground">
@@ -85,7 +70,7 @@ export default async function CartPage() {
 								<div className="border-t pt-4">
 									<div className="flex justify-between font-semibold text-lg">
 										<span>Total</span>
-										<span>${total.toFixed(2)}</span>
+										<span>0</span>
 									</div>
 								</div>
 								<CartItemsList.CheckoutButton
