@@ -4,12 +4,19 @@ import {
 	check,
 	integer,
 	numeric,
+	pgEnum,
 	pgTable,
 	text,
 	timestamp,
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
+
+export const orderStatusEnum = pgEnum("order_status", [
+	"pending",
+	"completed",
+	"refunded",
+]);
 
 export const orders = pgTable(
 	"orders",
@@ -18,6 +25,7 @@ export const orders = pgTable(
 		clerkId: text("clerk_id").notNull(),
 		stripeId: text("stripe_id").notNull(),
 		total: integer("total").notNull(),
+		status: orderStatusEnum("status").default("pending").notNull(),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 	},
 	(table) => [

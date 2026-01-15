@@ -1,15 +1,15 @@
-import { redirect } from "next/navigation";
-import { Calendar, Dumbbell, ShoppingBag } from "lucide-react";
+import { Button } from "@/src/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@/src/components/ui/card";
-import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-import { UserAvatar, UserButton, UserProfile } from "@clerk/nextjs";
+import { Calendar, Dumbbell, ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata = {
 	title: "Dashboard - FitHub Gym",
