@@ -1,4 +1,3 @@
-import { Navbar } from "@/src/components/navbar";
 import Link from "next/link";
 
 export const metadata = {

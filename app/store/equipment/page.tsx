@@ -1,15 +1,19 @@
 import { ProductGrid } from "@/src/components/product-grid";
-import { PRODUCTS } from "@/src/lib/products";
+import { SelectProductSchema } from "@/src/db/zod";
+import z from "zod";
 
 export const metadata = {
 	title: "Equipment - FitHub Gym Store",
 	description: "Shop premium gym equipment and accessories",
 };
 
-export default function EquipmentPage() {
-	const equipmentProducts = PRODUCTS.filter(
-		(p) => p.category === "equipment"
-	);
+export default async function EquipmentPage() {
+	const data = await fetch("http://localhost:3000/api/products");
+	const productsJson = await data.json();
+	const products = z
+		.array(SelectProductSchema)
+		.parse(productsJson)
+		.filter((p) => p.category === "equipment");
 
 	return (
 		<>
@@ -22,7 +26,7 @@ export default function EquipmentPage() {
 					</p>
 				</div>
 
-				<ProductGrid products={equipmentProducts} />
+				<ProductGrid products={products} />
 			</div>
 		</>
 	);

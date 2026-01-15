@@ -1,7 +1,8 @@
 import { ProductGrid } from "@/src/components/product-grid";
-import { PRODUCTS } from "@/src/lib/products";
+import { SelectProductSchema } from "@/src/db/zod";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import z from "zod";
 
 interface SubcategoryPageProps {
 	params: Promise<{ subcategory: string }>;
@@ -55,9 +56,14 @@ export default async function SubcategoryPage({
 		notFound();
 	}
 
-	const products = PRODUCTS.filter(
-		(p) => p.category === "food-drinks" && p.subcategory === subcategory
-	);
+	const data = await fetch("http://localhost:3000/api/products");
+	const productsJson = await data.json();
+	const products = z
+		.array(SelectProductSchema)
+		.parse(productsJson)
+		.filter(
+			(p) => p.category === "food-drinks" && p.subcategory === subcategory
+		);
 
 	return (
 		<>

@@ -1,14 +1,20 @@
-import { Navbar } from "@/src/components/navbar";
 import { ProductGrid } from "@/src/components/product-grid";
-import { PRODUCTS, CATEGORIES } from "@/src/lib/products";
+import { SelectProductSchema } from "@/src/db/zod";
+import { CATEGORIES } from "@/src/lib/products";
 import Link from "next/link";
+import z from "zod";
 
 export const metadata = {
 	title: "Store - FitHub Gym",
 	description: "Shop supplements, gym equipment, and healthy food & drinks",
 };
 
-export default function StorePage() {
+export default async function StorePage() {
+	const data = await fetch("http://localhost:3000/api/products");
+	const productsJson = await data.json();
+	const products = z.array(SelectProductSchema).parse(productsJson);
+
+	console.log(products);
 	return (
 		<>
 			<div className="mx-auto max-w-7xl px-4 py-12">
@@ -42,7 +48,7 @@ export default function StorePage() {
 				<div className="mb-6">
 					<h2 className="text-2xl font-bold">All Products</h2>
 				</div>
-				<ProductGrid products={PRODUCTS} />
+				<ProductGrid products={products} />
 			</div>
 		</>
 	);

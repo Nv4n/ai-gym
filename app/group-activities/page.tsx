@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar } from "@/src/components/navbar";
+import { Badge } from "@/src/components/ui/badge";
 import {
 	Card,
 	CardContent,
@@ -8,10 +8,9 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/src/components/ui/card";
-import { Badge } from "@/src/components/ui/badge";
 import { CATEGORIES, GROUP_ACTIVITIES } from "@/src/lib/group-activities";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function GroupActivitiesPage() {
 	return (

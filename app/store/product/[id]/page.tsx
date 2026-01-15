@@ -1,5 +1,5 @@
 import { Button } from "@/src/components/ui/button";
-import { PRODUCTS } from "@/src/lib/products";
+import { SelectProductSchema } from "@/src/db/zod";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -14,24 +14,20 @@ export async function generateMetadata({
 	params,
 }: ProductPageProps): Promise<Metadata> {
 	const { id } = await params;
-	const product = PRODUCTS.find((p) => p.id === id);
+	const data = await fetch(`/api/products/${id}`);
+	const product = await data.json();
 
 	return {
 		title: product ? `${product.name} - FitHub Gym` : "Product",
 		description: product?.description,
 	};
 }
-
-export function generateStaticParams() {
-	return PRODUCTS.map((product) => ({
-		id: product.id,
-	}));
-}
-
 export default async function ProductPage({ params }: ProductPageProps) {
 	const { id } = await params;
-	const product = PRODUCTS.find((p) => p.id === id);
-
+	const data = await fetch(`http://localhost:3000/api/products/${id}`);
+	const productJson = await data.json();
+	console.error(productJson);
+	const product = SelectProductSchema.parse(productJson);
 	if (!product) {
 		notFound();
 	}
@@ -101,7 +97,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 								<Button size="lg" className="w-full">
 									Add to cart (TO BE DEVELOPED)
 								</Button>
-								<CheckoutButton productId={product.id} />
+								<CheckoutButton
+									productId={product.id}
+									productPrice={product.price}
+								/>
 							</SignedIn>
 						</div>
 
@@ -132,7 +131,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
 	);
 }
 
-function CheckoutButton({ productId }: { productId: string }) {
+function CheckoutButton({
+	productId,
+	productPrice,
+}: {
+	productId: string;
+	productPrice: number;
+}) {
 	return (
 		<form
 			action={async () => {
@@ -157,7 +162,7 @@ function CheckoutButton({ productId }: { productId: string }) {
 			}}
 		>
 			<Button type="submit" size="lg" className="w-full">
-				Buy Now - ${PRODUCTS.find((p) => p.id === productId)?.price}
+				Buy Now - ${productPrice}
 			</Button>
 		</form>
 	);

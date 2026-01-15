@@ -1,14 +1,17 @@
 "use server";
 
 import { stripe } from "@/src/lib/stripe";
-import { PRODUCTS } from "@/src/lib/products";
+// import { PRODUCTS } from "@/src/lib/products";
 import { headers } from "next/headers";
 import { currentUser } from "@clerk/nextjs/server";
+import { SelectProductSchema } from "@/src/db/zod";
 
 export async function createCheckoutSession(productId: string) {
 	const user = await currentUser();
 	const origin: string = (await headers()).get("origin") as string;
-	const product = PRODUCTS.find((p) => p.id === productId);
+	const data = await fetch(`http://localhost:3000/api/products/${productId}`);
+	const productJson = await data.json();
+	const product = SelectProductSchema.parse(productJson);
 
 	if (!product) {
 		throw new Error(`Product with id "${productId}" not found`);

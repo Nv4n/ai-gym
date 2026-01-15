@@ -1,8 +1,9 @@
 import type { Product } from "@/src/lib/products";
 import { ProductCard } from "./product-card";
+import { SelectProduct } from "@/src/db/zod";
 
 interface ProductGridProps {
-	products: Product[];
+	products: SelectProduct[];
 }
 
 export function ProductGrid({ products }: ProductGridProps) {
