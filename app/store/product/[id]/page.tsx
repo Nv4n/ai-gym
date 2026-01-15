@@ -14,7 +14,7 @@ export async function generateMetadata({
 	params,
 }: ProductPageProps): Promise<Metadata> {
 	const { id } = await params;
-	const data = await fetch(`/api/products/${id}`);
+	const data = await fetch(`http://localhost:3000/api/products/${id}`);
 	const product = await data.json();
 
 	return {
@@ -26,7 +26,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 	const { id } = await params;
 	const data = await fetch(`http://localhost:3000/api/products/${id}`);
 	const productJson = await data.json();
-	console.error(productJson);
+	// console.error(productJson);
 	const product = SelectProductSchema.parse(productJson);
 	if (!product) {
 		notFound();
