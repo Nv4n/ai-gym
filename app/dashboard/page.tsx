@@ -1,4 +1,3 @@
-// import { createClient } from "@/src/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Calendar, Dumbbell, ShoppingBag } from "lucide-react";
 import {
@@ -55,15 +54,19 @@ export default async function DashboardPage() {
 
 	return (
 		<>
-		<div className="m-4">
-		<UserButton />
-
-		</div>
+			<div className="m-4">
+				<UserButton />
+			</div>
 			<div className="mx-auto max-w-7xl px-4 py-12">
 				<div className="mb-12">
-					<h1 className="text-4xl font-bold mb-2">
-						Welcome back, {user?.firstName || "User"}!
-					</h1>
+					<div className="flex gap-4">
+						<h1 className="text-4xl font-bold mb-2">
+							Welcome back, {user?.firstName || "User"}!
+						</h1>
+
+						<UserButton />
+					</div>
+
 					<p className="text-lg text-muted-foreground">
 						Track your fitness journey and manage your activities
 					</p>
@@ -240,6 +243,6 @@ export default async function DashboardPage() {
 					</Card>
 				</div>
 			</div>
-		</main>
+		</>
 	);
 }
