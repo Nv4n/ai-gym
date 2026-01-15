@@ -6,6 +6,7 @@ import {
 	numeric,
 	pgEnum,
 	pgTable,
+	real,
 	text,
 	timestamp,
 	uuid,
@@ -24,7 +25,8 @@ export const orders = pgTable(
 		id: uuid("id").defaultRandom().primaryKey(),
 		clerkId: text("clerk_id").notNull(),
 		stripeId: text("stripe_id").notNull(),
-		total: integer("total").notNull(),
+		total: real("total").notNull(),
+		address: text("address").notNull(),
 		status: orderStatusEnum("status").default("pending").notNull(),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 	},
@@ -32,6 +34,7 @@ export const orders = pgTable(
 		check("total_positive", sql`${table.total} > 0`),
 		check("clerk_id_not_empty", sql`LENGTH(${table.clerkId}) > 0`),
 		check("stripe_id_not_empty", sql`LENGTH(${table.stripeId}) > 0`),
+		check("address_not_empty", sql`LENGTH(${table.address}) > 0`),
 	]
 );
 
@@ -42,7 +45,7 @@ export const orderProducts = pgTable(
 		orderId: uuid("order_id")
 			.notNull()
 			.references(() => orders.id, { onDelete: "cascade" }),
-		productId: varchar("product_id", { length: 255 })
+		productId: uuid("product_id")
 			.notNull()
 			.references(() => products.id, { onDelete: "restrict" }),
 		priceAtPurchase: numeric("price_at_purchase", {

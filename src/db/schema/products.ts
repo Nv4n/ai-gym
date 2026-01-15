@@ -7,6 +7,7 @@ import {
 	check,
 	numeric,
 	text,
+	real,
 } from "drizzle-orm/pg-core";
 
 export const products = pgTable(
@@ -15,7 +16,7 @@ export const products = pgTable(
 		id: uuid("id").defaultRandom().primaryKey(),
 		name: varchar("name", { length: 255 }).notNull(),
 		description: text("description").notNull(),
-		price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+		price: real("price").notNull(),
 		image: text("image"),
 		category: varchar("category", { length: 255 }).notNull(),
 		subcategory: varchar("subcategory", { length: 255 }),
