@@ -3,6 +3,9 @@ import { SelectProductSchema } from "@/src/db/zod";
 import { CATEGORIES } from "@/src/lib/products";
 import Link from "next/link";
 import z from "zod";
+import { products as productsDrizzle } from "@/src/db/schema";
+import { db } from "@/src/db/db";
+
 
 export const metadata = {
 	title: "Store - FitHub Gym",
@@ -10,11 +13,9 @@ export const metadata = {
 };
 
 export default async function StorePage() {
-	const data = await fetch("http://localhost:3000/api/products");
-	const productsJson = await data.json();
-	const products = z.array(SelectProductSchema).parse(productsJson);
+	const data = await db.select().from(productsDrizzle);
+	const products = z.array(SelectProductSchema).parse(data);
 
-	console.log(products);
 	return (
 		<>
 			<div className="mx-auto max-w-7xl px-4 py-12">

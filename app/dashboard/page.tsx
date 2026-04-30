@@ -18,7 +18,6 @@ export const metadata = {
 
 export default async function DashboardPage() {
 	const user = await currentUser();
-	console.log(user?.privateMetadata);
 
 	if (user?.privateMetadata?.role === "admin") {
 		redirect("/dashboard/admin");

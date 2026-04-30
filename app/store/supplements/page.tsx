@@ -1,6 +1,8 @@
 import { ProductGrid } from "@/src/components/product-grid";
+import { db } from "@/src/db/db";
 import { SelectProductSchema } from "@/src/db/zod";
 import z from "zod";
+import { products as productsDrizzle } from "@/src/db/schema";
 
 export const metadata = {
 	title: "Supplements - FitHub Gym Store",
@@ -8,11 +10,10 @@ export const metadata = {
 };
 
 export default async function SupplementsPage() {
-	const data = await fetch("http://localhost:3000/api/products");
-	const productsJson = await data.json();
+	const data = await db.select().from(productsDrizzle);
 	const products = z
 		.array(SelectProductSchema)
-		.parse(productsJson)
+		.parse(data)
 		.filter((p) => p.category === "supplements");
 
 	return (

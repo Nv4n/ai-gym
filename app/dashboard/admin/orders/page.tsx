@@ -25,7 +25,6 @@ export default async function AdminOrdersPage() {
 	}
 
 	const orders = await stripe.paymentIntents.list({ limit: 10 });
-	console.log(orders);
 
 	return (
 		<>

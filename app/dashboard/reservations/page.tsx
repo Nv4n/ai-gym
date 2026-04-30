@@ -5,30 +5,30 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function UserReservationsPage() {
-	const supabase = await createClient();
+	// const supabase = await createClient();
 
-	const {
-		data: { user: authUser },
-	} = await supabase.auth.getUser();
+	// const {
+	// 	data: { user: authUser },
+	// } = await supabase.auth.getUser();
 
-	if (!authUser) {
-		redirect("/auth/login");
-	}
+	// if (!authUser) {
+	// 	redirect("/auth/login");
+	// }
 
-	const { data: reservations } = await supabase
-		.from("activity_reservations")
-		.select("*")
-		.eq("user_id", authUser.id)
-		.order("reservation_date", { ascending: false });
+	// const { data: reservations } = await supabase
+	// 	.from("activity_reservations")
+	// 	.select("*")
+	// 	.eq("user_id", authUser.id)
+	// 	.order("reservation_date", { ascending: false });
 
-	const upcomingReservations =
-		reservations?.filter(
-			(r) => r.reservation_date >= new Date().toISOString().split("T")[0]
-		) || [];
-	const pastReservations =
-		reservations?.filter(
-			(r) => r.reservation_date < new Date().toISOString().split("T")[0]
-		) || [];
+	// const upcomingReservations =
+	// 	reservations?.filter(
+	// 		(r) => r.reservation_date >= new Date().toISOString().split("T")[0]
+	// 	) || [];
+	// const pastReservations =
+	// 	reservations?.filter(
+	// 		(r) => r.reservation_date < new Date().toISOString().split("T")[0]
+	// 	) || [];
 
 	return (
 		<>
@@ -46,7 +46,7 @@ export default async function UserReservationsPage() {
 					</p>
 				</div>
 
-				{!reservations || reservations.length === 0 ? (
+				{/* {!reservations || reservations.length === 0 ? ( */}
 					<Card>
 						<CardContent className="flex flex-col items-center justify-center py-12">
 							<Calendar className="h-16 w-16 text-muted-foreground mb-4" />
@@ -63,7 +63,7 @@ export default async function UserReservationsPage() {
 							</Button>
 						</CardContent>
 					</Card>
-				) : (
+				{/* ) : (
 					<div className="space-y-8">
 						{upcomingReservations.length > 0 && (
 							<div>
@@ -167,7 +167,7 @@ export default async function UserReservationsPage() {
 							</div>
 						)}
 					</div>
-				)}
+				)} */}
 			</div>
 		</>
 	);

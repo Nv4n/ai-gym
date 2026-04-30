@@ -10,29 +10,29 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function UserOrdersPage() {
-	const supabase = await createClient();
+	// const supabase = await createClient();
 
-	const {
-		data: { user: authUser },
-	} = await supabase.auth.getUser();
+	// const {
+	// 	data: { user: authUser },
+	// } = await supabase.auth.getUser();
 
-	if (!authUser) {
-		redirect("/auth/login");
-	}
+	// if (!authUser) {
+	// 	redirect("/auth/login");
+	// }
 
-	const { data: orders } = await supabase
-		.from("orders")
-		.select(
-			`
-      *,
-      order_items(
-        *,
-        product:products(*)
-      )
-    `
-		)
-		.eq("user_id", authUser.id)
-		.order("created_at", { ascending: false });
+	// const { data: orders } = await supabase
+	// 	.from("orders")
+	// 	.select(
+	// 		`
+	//   *,
+	//   order_items(
+	//     *,
+	//     product:products(*)
+	//   )
+	// `
+	// 	)
+	// 	.eq("user_id", authUser.id)
+	// 	.order("created_at", { ascending: false });
 
 	return (
 		<main className="min-h-screen bg-background">
@@ -50,22 +50,22 @@ export default async function UserOrdersPage() {
 					</p>
 				</div>
 
-				{!orders || orders.length === 0 ? (
-					<Card>
-						<CardContent className="flex flex-col items-center justify-center py-12">
-							<Package className="h-16 w-16 text-muted-foreground mb-4" />
-							<h2 className="text-xl font-semibold mb-2">
-								No orders yet
-							</h2>
-							<p className="text-muted-foreground mb-4">
-								Start shopping to see your orders here
-							</p>
-							<Button asChild>
-								<Link href="/store">Browse Store</Link>
-							</Button>
-						</CardContent>
-					</Card>
-				) : (
+				{/* {!orders || orders.length === 0 ? ( */}
+				<Card>
+					<CardContent className="flex flex-col items-center justify-center py-12">
+						<Package className="h-16 w-16 text-muted-foreground mb-4" />
+						<h2 className="text-xl font-semibold mb-2">
+							No orders yet
+						</h2>
+						<p className="text-muted-foreground mb-4">
+							Start shopping to see your orders here
+						</p>
+						<Button asChild>
+							<Link href="/store">Browse Store</Link>
+						</Button>
+					</CardContent>
+				</Card>
+				{/* ) : (
 					<div className="space-y-6">
 						{orders.map((order) => (
 							<Card key={order.id}>
@@ -138,7 +138,7 @@ export default async function UserOrdersPage() {
 							</Card>
 						))}
 					</div>
-				)}
+				)} */}
 			</div>
 		</main>
 	);

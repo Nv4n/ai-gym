@@ -27,7 +27,6 @@ export async function ProductCard({ product }: ProductCardProps) {
 	if (result.status === 200) {
 		imageName = product.image as string;
 	}
-	console.log(product);
 
 	return (
 		<Card className="flex flex-col overflow-hidden hover:shadow-lg transition-shadow">

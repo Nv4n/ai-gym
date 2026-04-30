@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { db } from "@/src/db/db";
+import { products as productsDrizzle } from "@/src/db/schema";
 
 interface ProductPageProps {
 	params: Promise<{ id: string }>;
@@ -24,10 +26,11 @@ export async function generateMetadata({
 }
 export default async function ProductPage({ params }: ProductPageProps) {
 	const { id } = await params;
-	const data = await fetch(`http://localhost:3000/api/products/${id}`);
-	const productJson = await data.json();
+	const data = await db.select().from(productsDrizzle);
+
+	const dataProduct = data.filter((p) => p.id === id)[0];
 	// console.error(productJson);
-	const product = SelectProductSchema.parse(productJson);
+	const product = SelectProductSchema.parse(dataProduct);
 	if (!product) {
 		notFound();
 	}
@@ -142,9 +145,8 @@ function CheckoutButton({
 		<form
 			action={async () => {
 				"use server";
-				const { createCheckoutSession } = await import(
-					"@/app/actions/stripe"
-				);
+				const { createCheckoutSession } =
+					await import("@/app/actions/stripe");
 
 				let result: {
 					sessionId: string;

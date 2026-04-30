@@ -124,7 +124,6 @@ export async function generateAIWorkout(request: WorkoutRequest) {
 	}
 
 	const workout = WorkoutPlanSchema.parse(JSON.parse(response.text));
-	console.log(workout);
 
 	return workout;
 }
@@ -155,8 +154,6 @@ export async function generateAIDietPlan(request: DietRequest) {
 	}
 
 	const diet = DietPlanSchema.parse(JSON.parse(response.text));
-	console.log(diet);
-	console.log(diet.days[0].meals);
 
 	return diet;
 }
