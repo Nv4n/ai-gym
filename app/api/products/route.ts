@@ -14,7 +14,6 @@ export async function GET(request: NextRequest) {
 	// }
 
 	const productsRes = await db.select().from(products);
-	console.log(productsRes);
 
 	return NextResponse.json(productsRes);
 }
