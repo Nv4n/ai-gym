@@ -8,5 +8,4 @@ export const aiLog = pgTable("ai_log", {
 	userId: text("user_id"),
 	data: json(),
 	createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`).notNull(),
-	type: aiCategory().notNull(),
 });
