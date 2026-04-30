@@ -7,7 +7,7 @@ import {
 	CardTitle,
 } from "@/src/components/ui/card";
 import { currentUser } from "@clerk/nextjs/server";
-import { ArrowLeft, Package } from "lucide-react";
+import { ArrowLeft, Package, PlusCircleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -31,6 +31,13 @@ export default async function AdminProductsPage() {
 						<Link href="/dashboard/admin">
 							<ArrowLeft className="mr-2 h-4 w-4" />
 							Back to Dashboard
+						</Link>
+					</Button>
+
+					<Button variant="outline" asChild className="mb-4">
+						<Link href="/dashboard/admin/products/create">
+							<PlusCircleIcon className="mr-2 h-4 w-4" />
+							Create product
 						</Link>
 					</Button>
 					<h1 className="text-4xl font-bold mb-2">

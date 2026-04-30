@@ -110,7 +110,7 @@ export async function generateAIWorkout(request: WorkoutRequest) {
 	const prompt = generateWorkoutPrompt(request);
 
 	const response = await ai.models.generateContent({
-		model: "gemini-2.5-flash",
+		model: "gemini-3-flash-preview",
 		contents: prompt,
 		config: {
 			responseMimeType: "application/json",
@@ -141,7 +141,7 @@ export async function generateAIDietPlan(request: DietRequest) {
 	const prompt = generateDietPrompt(request);
 
 	const response = await ai.models.generateContent({
-		model: "gemini-2.5-flash",
+		model: "gemini-3-flash-preview",
 		contents: prompt,
 		config: {
 			responseMimeType: "application/json",

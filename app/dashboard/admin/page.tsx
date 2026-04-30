@@ -1,21 +1,20 @@
-import { redirect } from "next/navigation";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@/src/components/ui/card";
-import {
-	Users,
-	ShoppingBag,
-	Calendar,
-	TrendingUp,
-	Package,
-	DollarSign,
-} from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-import { stripe } from "@/src/lib/stripe";
-import { UserAvatar, UserButton, UserProfile } from "@clerk/nextjs";
+import {
+	Calendar,
+	DollarSign,
+	Package,
+	ShoppingBag,
+	TrendingUp,
+	Users,
+} from "lucide-react";
+import { redirect } from "next/navigation";
 
 export const metadata = {
 	title: "Admin Dashboard - FitHub Gym",

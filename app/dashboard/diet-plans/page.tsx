@@ -1,13 +1,13 @@
-import { redirect } from "next/navigation";
+import { Button } from "@/src/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@/src/components/ui/card";
-import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
 import { ArrowLeft, Utensils } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function UserDietPlansPage() {
 	const supabase = await createClient();

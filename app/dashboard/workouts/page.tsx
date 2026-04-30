@@ -1,13 +1,13 @@
-import { redirect } from "next/navigation";
+import { Button } from "@/src/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@/src/components/ui/card";
-import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
 import { ArrowLeft, Dumbbell } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function UserWorkoutsPage() {
 	const supabase = await createClient();

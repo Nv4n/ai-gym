@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS products (
 -- Orders table
 CREATE TABLE IF NOT EXISTS orders (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id VARCHAR(32) NOT NULL,
   total DECIMAL(10, 2) NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'shipped', 'delivered', 'cancelled')),
   stripe_session_id TEXT,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS order_items (
 -- Cart table
 CREATE TABLE IF NOT EXISTS cart_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id VARCHAR(32) NOT NULL,
   product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
   quantity INTEGER NOT NULL DEFAULT 1,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
 -- Workout plans table
 CREATE TABLE IF NOT EXISTS workout_plans (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id VARCHAR(32) NOT NULL,
   plan_slug TEXT NOT NULL,
   plan_name TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'completed', 'paused')),
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS workout_plans (
 -- Diet plans table
 CREATE TABLE IF NOT EXISTS diet_plans (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id VARCHAR(32) NOT NULL,
   plan_name TEXT NOT NULL,
   calories INTEGER NOT NULL,
   dietary_preference TEXT NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS diet_plans (
 -- Personal training sessions table
 CREATE TABLE IF NOT EXISTS training_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id VARCHAR(32) NOT NULL,
   trainer_name TEXT NOT NULL,
   session_type TEXT NOT NULL,
   session_date DATE NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS training_sessions (
 -- Group activity reservations table
 CREATE TABLE IF NOT EXISTS activity_reservations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id VARCHAR(32) NOT NULL,
   activity_slug TEXT NOT NULL,
   activity_name TEXT NOT NULL,
   activity_category TEXT NOT NULL,
@@ -105,7 +105,6 @@ CREATE TABLE IF NOT EXISTS activity_reservations (
 );
 
 -- Create indexes for better query performance
-CREATE INDEX IF NOT EXISTS idx_users_clerk_user_id ON users(clerk_user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_cart_items_user_id ON cart_items(user_id);

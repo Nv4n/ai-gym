@@ -2,9 +2,9 @@
 
 import { stripe } from "@/src/lib/stripe";
 // import { PRODUCTS } from "@/src/lib/products";
-import { headers } from "next/headers";
-import { currentUser } from "@clerk/nextjs/server";
 import { SelectProductSchema } from "@/src/db/zod";
+import { currentUser } from "@clerk/nextjs/server";
+import { headers } from "next/headers";
 
 export async function createCheckoutSession(productId: string) {
 	const user = await currentUser();
