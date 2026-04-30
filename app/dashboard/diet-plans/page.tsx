@@ -10,23 +10,23 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function UserDietPlansPage() {
-	const supabase = await createClient();
+	// const supabase = await createClient();
 
-	const {
-		data: { user: authUser },
-	} = await supabase.auth.getUser();
+	// const {
+	// 	data: { user: authUser },
+	// } = await supabase.auth.getUser();
 
-	if (!authUser) {
-		redirect("/auth/login");
-	}
+	// if (!authUser) {
+	// 	redirect("/auth/login");
+	// }
 
-	const { data: dietPlans } = await supabase
-		.from("diet_plans")
-		.select("*")
-		.eq("user_id", authUser.id)
-		.order("created_at", { ascending: false });
+	// const { data: dietPlans } = await supabase
+	// 	.from("diet_plans")
+	// 	.select("*")
+	// 	.eq("user_id", authUser.id)
+	// 	.order("created_at", { ascending: false });
 
-	const activePlans = dietPlans?.filter((p) => p.status === "active") || [];
+	// const activePlans = dietPlans?.filter((p) => p.status === "active") || [];
 
 	return (
 		<>
@@ -44,32 +44,31 @@ export default async function UserDietPlansPage() {
 					</p>
 				</div>
 
-				{!dietPlans || dietPlans.length === 0 ? (
-					<Card>
-						<CardContent className="flex flex-col items-center justify-center py-12">
-							<Utensils className="h-16 w-16 text-muted-foreground mb-4" />
-							<h2 className="text-xl font-semibold mb-2">
-								No diet plans yet
-							</h2>
-							<p className="text-muted-foreground mb-4">
-								Create a diet plan to start tracking your
-								nutrition
-							</p>
-							<div className="flex gap-4">
-								<Button asChild>
-									<Link href="/gym/diet-plans">
-										Browse Diet Plans
-									</Link>
-								</Button>
-								<Button asChild variant="outline">
-									<Link href="/gym/ai-diet-plans">
-										Generate AI Diet Plan
-									</Link>
-								</Button>
-							</div>
-						</CardContent>
-					</Card>
-				) : (
+				{/* {!dietPlans || dietPlans.length === 0 ? ( */}
+				<Card>
+					<CardContent className="flex flex-col items-center justify-center py-12">
+						<Utensils className="h-16 w-16 text-muted-foreground mb-4" />
+						<h2 className="text-xl font-semibold mb-2">
+							No diet plans yet
+						</h2>
+						<p className="text-muted-foreground mb-4">
+							Create a diet plan to start tracking your nutrition
+						</p>
+						<div className="flex gap-4">
+							<Button asChild>
+								<Link href="/gym/diet-plans">
+									Browse Diet Plans
+								</Link>
+							</Button>
+							<Button asChild variant="outline">
+								<Link href="/gym/ai-diet-plans">
+									Generate AI Diet Plan
+								</Link>
+							</Button>
+						</div>
+					</CardContent>
+				</Card>
+				{/* ) : (
 					<div className="space-y-6">
 						{activePlans.map((plan) => {
 							const macros = plan.macros as {
@@ -144,7 +143,7 @@ export default async function UserDietPlansPage() {
 											<span className="text-xs text-muted-foreground">
 												Started{" "}
 												{new Date(
-													plan.created_at
+													plan.created_at,
 												).toLocaleDateString()}
 											</span>
 										</div>
@@ -153,7 +152,7 @@ export default async function UserDietPlansPage() {
 							);
 						})}
 					</div>
-				)}
+				)} */}
 			</div>
 		</>
 	);
